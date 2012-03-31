@@ -65,7 +65,7 @@ class Group(db.Model):
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if not 'username' in session.keys():
+        if not session.get('username', None):
             flash('You need to be logged in to access that page.', 'error')
             return redirect(url_for('login'))
         return f(*args, **kwargs)
@@ -75,13 +75,18 @@ def login_required(f):
 def check_permissions(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # request.path
-        # based on the url, e.g.: /item/edit, /item/view, /item/list, ...
-#        if not 'username' in session.keys():
-#            flash('You do not have the required permissions to access that page.', 'error')
-#            return redirect(url_for('login'))
+        # based on the url - request.path: /item/edit, /item/view, /item/list, ... 
+        # based on a function argument: @check_permissions(needuser='foo', needgroup='bar')
+        if not session.get('username', None):
+            flash('You do not have the required permissions to access that page.', 'error')
+            return redirect(url_for('login'))
         return f(*args, **kwargs)
     return decorated_function
+
+
+@app.template_filter()
+def reverse(s):
+    return s[::-1]
 
 
 ##
@@ -98,7 +103,6 @@ def people():
 
 
 @app.route('/people/<username>/')
-@check_permissions
 def person(username):
     g.person = Person.query.filter_by(username=username).first()
     return render_template('person.html')
@@ -118,7 +122,10 @@ def group(groupname):
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    error = None
+    if session.get('username', None):
+        flash('You are already logged in. Log out first if you want to change to a different user.')
+        return redirect(url_for('index'))
+
     if request.method == 'POST':
         person = Person.query.filter_by(username=request.form['username'], password=sha1(request.form['password']).hexdigest()).first()
         if person is None:
@@ -137,18 +144,18 @@ def login():
 
 @app.route('/logout')
 def logout():
-    flash('Logged out. Thank you for your visit.')
     session.pop('username', None)
+    flash('Logged out. Thank you for your visit.')
     return redirect(url_for('index'))
 
 
 @app.route('/register')
 def register():
-    if session['username']:
+    if session.get('username', None):
         flash('You are already logged in. Please log out before registering a new account.')
         return redirect(url_for('index'))
 
-    return render_template('todo.html')
+    return render_template('register.html')
 
 
 @app.route('/admin/')
@@ -156,10 +163,43 @@ def admin():
     return render_template('admin.html')
 
 
-@app.route('/admin/groups/')
+@app.route('/admin/groups/', methods=['POST', 'GET'])
 def admin_groups():
+    if request.method == 'POST':
+        if request.form['action'] == 'add':
+            group = Group(request.form['groupname'], request.form['displayname'], request.form['email'])
+            db.session.add(group)
+            db.session.commit()
+            flash('Group added.')
+
+        elif request.form['action'] == 'delete':
+            group = Group.query.filter_by(groupname=request.form['groupname']).first()
+            db.session.delete(group)
+            db.session.commit()
+            flash('Group deleted.')
+
+
     g.groups = Group.query.all()
     return render_template('admin_groups.html')
+
+
+@app.route('/admin/people/', methods=['POST', 'GET'])
+def admin_people():
+    if request.method == 'POST':
+        if request.form['action'] == 'add':
+            person = Person(request.form['username'], request.form['password'], request.form['fullname'], request.form['email'])
+            db.session.add(person)
+            db.session.commit()
+            flash('Person added.')
+
+        elif request.form['action'] == 'delete':
+            person = Person.query.filter_by(groupname=request.form['username']).first()
+            db.session.delete(person)
+            db.session.commit()
+            flash('Person deleted.')
+
+    g.people = Person.query.all()
+    return render_template('admin_people.html')
 
 
 # this shouldn't be available in production, it's here to add some test data
@@ -196,7 +236,7 @@ def flash_test():
 
 @app.route('/debug')
 def debug():
-    flash(dir(db))
+    print dir(session)
     return render_template('index.html')
 
 

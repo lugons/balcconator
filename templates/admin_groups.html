@@ -6,12 +6,25 @@
         <tr><th>groupname</th><th>displayname</th><th>email</th><th>registration_date</th><th>members</th><th>action</th></tr>
         {%- for group in g.groups %}
         <tr>
+        <form method="post">
             <td>{{ group.groupname }}</td><td>{{ group.displayname }}</td><td>{{ group.email }}</td><td>{{ group.registration_date }}</td>
-            <td>{% for member in group.members %}
-                {{ member.username }}
-            {% endfor %}</td>
-            <td><form method="post"><input type="hidden" value="{{ group.groupname }}"/><input type="submit" value="delete"/></form></td>
+            <td>{{ group.members|join(', ', attribute='username')}}</td>
+            <td>
+                <input type="hidden" name="groupname" value="{{ group.groupname }}"/>
+                <input type="submit" name="action" value="delete"/>
+            </td>
+        </form>
         </tr>
         {%- endfor %}
+        <tr>
+        <form method="post">
+            <td><input type="text" name="groupname"/></td>
+            <td><input type="text" name="displayname"/></td>
+            <td><input type="email" name="email"/></td>
+            <td></td>
+            <td></td>
+            <td><input type="submit" name="action" value="add"/></td>
+        </form>
+        </tr>
     </table>
 {% endblock %}
