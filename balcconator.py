@@ -206,7 +206,7 @@ app.config.from_envvar('BALCCONATOR_SETTINGS', silent=True)
 if not app.debug:
     import logging
     from logging import FileHandler
-    file_handler = FileHandler('balcconator.log')
+    file_handler = FileHandler(app.config['LOG_FILE'])
     file_handler.setLevel(logging.WARNING)
     app.logger.addHandler(file_handler)
 
