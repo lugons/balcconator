@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% set active_page = "groups" %}
+{% set title = "Groups - " + g.group.displayname %}
+{% block content %}
+    Hello, this is the group {{ g.group.displayname }}. You can contact us at <a href="mailto:{{ g.group.email }}">{{ g.group.email }}</a>.<br/>
+    Group members are:
+    <ul>
+        {% for member in g.group.members %}
+        <li><a href="{{ url_for('person', username=member.username) }}">{{ member.fullname }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

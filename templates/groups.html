@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% set active_page = "groups" %}
+{% set title = "Groups" %}
+{% block content %}
+    <ul>
+        {%- for group in g.groups %}
+        <li><a href="{{ url_for('group', groupname=group['groupname']) }}">{{ group['displayname'] }}</a></li>
+        {%- endfor %}
+    </ul>
+{% endblock %}

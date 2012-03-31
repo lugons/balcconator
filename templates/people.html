@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% set active_page = "people" %}
+{% set title = "People" %}
+{% block content %}
+    <ul>
+        {%- for person in g.people %}
+        <li><a href="{{ url_for('person', username=person['username']) }}">{{ person['fullname'] }}</a></li>
+        {%- endfor %}
+    </ul>
+{% endblock %}

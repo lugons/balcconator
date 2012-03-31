@@ -1,0 +1,43 @@
+#menu {
+    border: 2px solid #79b;
+    background-color: #bdf;
+    text-align: center;
+}
+
+#menu a {
+    padding: 1px 4px;
+    margin: 2px 6px;
+    border: 2px solid #bdf;
+    display: inline-block;
+    text-decoration: none;
+    background-color: #fff;
+    color: #468;
+}
+
+#menu a.active {
+    border: 2px solid #79b;
+}
+
+#menu a:hover {
+    border: 2px solid #79b;
+}
+
+#flashes {
+    background-color: #ccc;
+}
+
+#flashes .error {
+    background-color: #f00;
+}
+
+#flashes .message {
+    background-color: #0c0;
+}
+
+td, th {
+    padding: 0 10px;
+}
+
+form.action {
+    display: inline-block;
+}

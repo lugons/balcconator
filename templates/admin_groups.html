@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% set active_page = "admin_groups" %}
+{% set title = "Admin - Groups" %}
+{% block content %}
+    <table border="1px" >
+        <tr><th>groupname</th><th>displayname</th><th>email</th><th>registration_date</th><th>members</th><th>action</th></tr>
+        {%- for group in g.groups %}
+        <tr>
+            <td>{{ group.groupname }}</td><td>{{ group.displayname }}</td><td>{{ group.email }}</td><td>{{ group.registration_date }}</td>
+            <td>{% for member in group.members %}
+                {{ member.username }}
+            {% endfor %}</td>
+            <td><form method="post"><input type="hidden" value="{{ group.groupname }}"/><input type="submit" value="delete"/></form></td>
+        </tr>
+        {%- endfor %}
+    </table>
+{% endblock %}

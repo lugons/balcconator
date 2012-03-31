@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% set active_page = "admin_groups" %}
+{% set title = "Admin" %}
+{% block content %}
+<ul>
+<li><a href="{{ url_for('admin_groups') }}">Groups</a></li>
+</ul>
+{% endblock %}

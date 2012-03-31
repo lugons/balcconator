@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>BalCConator - {{ title }}</title>
+</head>
+<body>
+{% set active_page = active_page|default('index') %}
+    <h1>BalCConator</h1>
+    <div id="menu">
+        <a{% if active_page == 'index' %} class="active"{% endif %} href="{{ url_for('index') }}">Home</a>
+        <a{% if active_page == 'people' %} class="active"{% endif %} href="{{ url_for('people') }}">People</a>
+        <a{% if active_page == 'groups' %} class="active"{% endif %} href="{{ url_for('groups') }}">Groups</a>
+        {% if not session.username %}<a{% if active_page == 'login' %} class="active"{% endif %} href="{{ url_for('login') }}">Login</a>{% endif %}
+        {% if not session.username %}<a{% if active_page == 'register' %} class="active"{% endif %} href="{{ url_for('register') }}">Register</a>{% endif %}
+        {% if session.username %}<a{% if active_page == 'logout' %} class="active"{% endif %} href="{{ url_for('logout') }}">Logout</a>{% endif %}
+        {% if session.username == 'admin' %}
+        <span>Admin:</span>
+        <a{% if active_page == 'admin' %} class="active"{% endif %} href="{{ url_for('admin') }}">Administration interface</a>
+        <a{% if active_page == 'admin_initdb' %} class="active"{% endif %} href="{{ url_for('admin_initdb') }}">Initialize database</a>
+        {% endif %}
+    </div>
+    {% if session.username %}<div style="float: right">logged in as: {{ session.username }}</div>{% endif %}
+    {%- with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul id="flashes">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith -%}
+    <h2>{{ title }}</h2>
+    <div id="content">{% block content %}{% endblock %}</div>
+    <hr />
+    <div id="footer">
+        <a href="http://validator.w3.org/check?uri=referer">W3C Validator</a><br />
+        session: {{ session }}
+    </div>
+</body>
