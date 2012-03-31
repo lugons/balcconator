@@ -13,7 +13,7 @@ db = SQLAlchemy(app)
 from functools import wraps
 from datetime import datetime
 from hashlib import sha1
-from recaptcha.client import captcha
+#from recaptcha.client import captcha
 
 
 ##
