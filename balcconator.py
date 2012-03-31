@@ -181,11 +181,6 @@ def admin_initdb():
     db.session.add(jane)
     db.session.add(admins)
     db.session.commit()
-    adminadmin = GroupMemberPermissions('admins', 'admin')
-    db.session.add(adminadmin)
-    db.session.commit()
-    print '::::::', dir(groupmembers)
-    #groupmembers.insert('admins', 'admin')
 
     flash('Database (re)initialized.')
     return redirect(url_for('index'))
@@ -205,9 +200,18 @@ def debug():
     return render_template('index.html')
 
 
+app.config.from_object('config')
+app.config.from_envvar('BALCCONATOR_SETTINGS', silent=True)
+
+if not app.debug:
+    import logging
+    from logging import FileHandler
+    file_handler = FileHandler('balcconator.log')
+    file_handler.setLevel(logging.WARNING)
+    app.logger.addHandler(file_handler)
+
+
 ##
 # run the standalone server
 if __name__ == '__main__':
-    app.config.from_object('config')
-    app.config.from_envvar('BALCCONATOR_SETTINGS', silent=True)
     app.run()
