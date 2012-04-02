@@ -3,6 +3,7 @@
 {% set title = "Admin" %}
 {% block content %}
 <ul>
+<li><a href="{{ url_for('admin_people') }}">People</a></li>
 <li><a href="{{ url_for('admin_groups') }}">Groups</a></li>
 </ul>
 {% endblock %}

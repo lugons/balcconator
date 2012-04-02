@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% set active_page = "unauthorized" %}
+{% set title = "Unauthorized" %}
+{% block content %}
+    You do not have access to the requested page.
+    {% if session.username %}
+    The user you are authenticated as does not have permissions to access the requested page.
+    {% else %}
+    This page is not publically available. You should try <a href="{{ url_for('login') }}">logging in</a> first.
+    {% endif %}
+{% endblock %}

@@ -22,16 +22,12 @@
     border: 2px solid #79b;
 }
 
-#flashes {
-    background-color: #ccc;
-}
-
 #flashes .error {
-    background-color: #f00;
+    background-color: #f99;
 }
 
 #flashes .message {
-    background-color: #0c0;
+    background-color: #ff9;
 }
 
 td, th {

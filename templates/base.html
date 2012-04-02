@@ -17,11 +17,12 @@
         {% if session.username %}<a{% if active_page == 'logout' %} class="active"{% endif %} href="{{ url_for('logout') }}">Logout</a>{% endif %}
         {% if session.username == 'admin' %}
         <span>Admin:</span>
-        <a{% if active_page == 'admin' %} class="active"{% endif %} href="{{ url_for('admin') }}">Administration interface</a>
-        <a{% if active_page == 'admin_initdb' %} class="active"{% endif %} href="{{ url_for('admin_initdb') }}">Initialize database</a>
+        <a{% if active_page == 'admin' %} class="active"{% endif %} href="{{ url_for('admin') }}">Main</a>
+        <a{% if active_page == 'admin' %} class="active"{% endif %} href="{{ url_for('admin_people') }}">People</a>
+        <a{% if active_page == 'admin' %} class="active"{% endif %} href="{{ url_for('admin_groups') }}">Groups</a>
         {% endif %}
+        {% if session.username %}<div style="float: right">logged in as: {{ session.username }}</div>{% endif %}
     </div>
-    {% if session.username %}<div style="float: right">logged in as: {{ session.username }}</div>{% endif %}
     {%- with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     <ul id="flashes">

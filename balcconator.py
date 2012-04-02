@@ -3,7 +3,7 @@
 
 import config
 
-from flask import Flask, render_template, make_response, request, g, session, flash, redirect, url_for
+from flask import Flask, render_template, make_response, request, g, session, flash, redirect, url_for, abort
 app = Flask(__name__)
 
 from sqlalchemy.dialects import postgresql
@@ -65,9 +65,25 @@ class Group(db.Model):
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if not session.get('username', None):
+        username = session.get('username', None)
+        if not username:
             flash('You need to be logged in to access that page.', 'error')
+            abort(401)
             return redirect(url_for('login'))
+
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        username = session.get('username', None)
+        if not (username == 'admin'):
+            flash('You need to be logged in as an administrator to access that page.', 'error')
+            abort(401)
+            return redirect(url_for('login'))
+        
         return f(*args, **kwargs)
     return decorated_function
 
@@ -77,9 +93,11 @@ def check_permissions(f):
     def decorated_function(*args, **kwargs):
         # based on the url - request.path: /item/edit, /item/view, /item/list, ... 
         # based on a function argument: @check_permissions(needuser='foo', needgroup='bar')
-        if not session.get('username', None):
-            flash('You do not have the required permissions to access that page.', 'error')
+        username = session.get('username', None)
+        if not username:
+            flash('The access to that page is restricted. You need to be logged in as a user with proper permissions.', 'error')
             return redirect(url_for('login'))
+
         return f(*args, **kwargs)
     return decorated_function
 
@@ -159,11 +177,13 @@ def register():
 
 
 @app.route('/admin/')
+@admin_required
 def admin():
     return render_template('admin.html')
 
 
 @app.route('/admin/groups/', methods=['POST', 'GET'])
+@admin_required
 def admin_groups():
     if request.method == 'POST':
         if request.form['action'] == 'add':
@@ -184,6 +204,7 @@ def admin_groups():
 
 
 @app.route('/admin/people/', methods=['POST', 'GET'])
+@admin_required
 def admin_people():
     if request.method == 'POST':
         if request.form['action'] == 'add':
@@ -202,28 +223,15 @@ def admin_people():
     return render_template('admin_people.html')
 
 
-# this shouldn't be available in production, it's here to add some test data
-@app.route('/admin/initdb')
-def admin_initdb():
-    db.drop_all()
-    db.create_all()
-    admin = Person('admin', 'adm1n', 'Administrator', 'admin@localhost')
-    john = Person('john', 'john', 'John Doe', 'john@localhost')
-    jane = Person('jane', 'jane', 'Jane Doe', 'jane@localhost')
-    admins = Group('admins', 'Administrators', 'admins@localhost')
-    lecturers = Group('lecturers', 'Lecturers', 'lecturers@localhost')
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
-    admin.groups.append(admins)
-    john.groups.append(lecturers)
-    jane.groups.append(lecturers)
-    db.session.add(admin)
-    db.session.add(john)
-    db.session.add(jane)
-    db.session.add(admins)
-    db.session.commit()
 
-    flash('Database (re)initialized.')
-    return redirect(url_for('index'))
+@app.errorhandler(401)
+def unauthorized(e):
+    return render_template('401.html'), 404
+
 
 
 # TODO: remove when finished testing/styling in css
@@ -231,12 +239,6 @@ def admin_initdb():
 def flash_test():
     flash('This is an error message', 'error')
     flash('This is a message without a category')
-    return render_template('index.html')
-
-
-@app.route('/debug')
-def debug():
-    print dir(session)
     return render_template('index.html')
 
 
