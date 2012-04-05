@@ -4,7 +4,7 @@
 {% block content %}
     <ul>
         {%- for person in g.people %}
-        <li><a href="{{ url_for('person', username=person['username']) }}">{{ person['fullname'] }}</a></li>
+        <li><a href="{{ url_for('person', username=person['username']) }}">{{ person['displayname'] }}</a></li>
         {%- endfor %}
     </ul>
 {% endblock %}

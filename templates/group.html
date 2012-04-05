@@ -6,7 +6,7 @@
     Group members are:
     <ul>
         {% for member in g.group.members %}
-        <li><a href="{{ url_for('person', username=member.username) }}">{{ member.fullname }}</a></li>
+        <li><a href="{{ url_for('person', username=member.username) }}">{{ member.displayname }}</a></li>
         {% endfor %}
     </ul>
 {% endblock %}

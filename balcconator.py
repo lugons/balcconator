@@ -27,15 +27,15 @@ groupmembers = db.Table('groupmembers',
 class Person(db.Model):
     username = db.Column(db.String(40), primary_key=True)
     password = db.Column(db.String(40))
-    fullname = db.Column(db.String(80), unique=True)
+    displayname = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(120), unique=True)
     registration_date = db.Column(db.DateTime)
     groups = db.relationship('Group', secondary=groupmembers, backref=db.backref('groups', lazy='dynamic'))
                                 
-    def __init__(self, username, password, fullname, email):
+    def __init__(self, username, password, displayname, email):
         self.username = username
         self.password = sha1(password).hexdigest()
-        self.fullname = fullname
+        self.displayname = displayname
         self.email = email
         self.registration_date = datetime.utcnow()
 
@@ -208,7 +208,7 @@ def admin_groups():
 def admin_people():
     if request.method == 'POST':
         if request.form['action'] == 'add':
-            person = Person(request.form['username'], request.form['password'], request.form['fullname'], request.form['email'])
+            person = Person(request.form['username'], request.form['password'], request.form['displayname'], request.form['email'])
             db.session.add(person)
             db.session.commit()
             flash('Person added.')
