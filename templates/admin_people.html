@@ -3,11 +3,29 @@
 {% set title = "Admin - People" %}
 {% block content %}
     <table border="1px" >
-        <tr><th>username</th><th>password</th><th>displayname</th><th>email</th><th>registration_date</th><th>groups</th><th>action</th></tr>
+        <tr>
+            <th>username</th>
+            <th>password</th>
+            <th>firstname</th>
+            <th>lastname</th>
+            <th>displayname</th>
+            <th>gender</th>
+            <th>email</th>
+            <th>registration_date</th>
+            <th>groups</th>
+            <th>action</th>
+        </tr>
         {%- for person in g.people %}
         <tr>
         <form method="post">
-            <td>{{ person.username }}</td><td></td><td>{{ person.displayname }}</td><td>{{ person.email }}</td><td>{{ person.registration_date }}</td>
+            <td>{{ person.username }}</td>
+            <td><!-- password --></td>
+            <td>{{ person.firstname }}</td>
+            <td>{{ person.lastname }}</td>
+            <td>{{ person.displayname }}</td>
+            <td>{{ person.gender }}</td>
+            <td>{{ person.email }}</td>
+            <td>{{ person.registration_date }}</td>
             <td>{{ person.groups|join(', ', attribute='groupname')}}</td>
             <td>
                 <input type="hidden" name="username" value="{{ person.username }}"/>
@@ -19,8 +37,17 @@
         <tr>
         <form method="post">
             <td><input type="text" name="username"/></td>
-            <td><input type="text" name="password"/></td>
+            <td><input type="password" name="password"/></td>
+            <td><input type="text" name="firstname"/></td>
+            <td><input type="text" name="lastname"/></td>
             <td><input type="text" name="displayname"/></td>
+            <td>
+                <select name="gender" value="unspecified">
+                    <option value="unspecified">unspecified</option>
+                    <option value="male"/>male</option>
+                    <option value="female"/>female</option>
+                </select>
+            </td>
             <td><input type="email" name="email"/></td>
             <td></td>
             <td></td>

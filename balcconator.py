@@ -6,7 +6,8 @@ import config
 from flask import Flask, render_template, make_response, request, g, session, flash, redirect, url_for, abort
 app = Flask(__name__)
 
-from sqlalchemy.dialects import postgresql
+#from sqlalchemy.dialects import postgresql
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from flaskext.sqlalchemy import SQLAlchemy
 db = SQLAlchemy(app)
 
@@ -27,15 +28,21 @@ groupmembers = db.Table('groupmembers',
 class Person(db.Model):
     username = db.Column(db.String(40), primary_key=True)
     password = db.Column(db.String(40))
-    displayname = db.Column(db.String(80), unique=True)
+    firstname = db.Column(db.String(40))
+    lastname = db.Column(db.String(40))
+    displayname = db.Column(db.String(80))
+    gender = db.Column(db.Enum('male', 'female', 'unspecified'))
     email = db.Column(db.String(120), unique=True)
     registration_date = db.Column(db.DateTime)
     groups = db.relationship('Group', secondary=groupmembers, backref=db.backref('groups', lazy='dynamic'))
                                 
-    def __init__(self, username, password, displayname, email):
+    def __init__(self, username, password, firstname, lastname, displayname, gender, email):
         self.username = username
         self.password = sha1(password).hexdigest()
+        self.firstname = firstname
+        self.lastname = lastname
         self.displayname = displayname
+        self.gender = gender
         self.email = email
         self.registration_date = datetime.utcnow()
 
@@ -208,10 +215,28 @@ def admin_groups():
 def admin_people():
     if request.method == 'POST':
         if request.form['action'] == 'add':
-            person = Person(request.form['username'], request.form['password'], request.form['displayname'], request.form['email'])
-            db.session.add(person)
-            db.session.commit()
-            flash('Person added.')
+            person = Person(
+                request.form['username'],
+                request.form['password'],
+                request.form['firstname'],
+                request.form['lastname'],
+                request.form['displayname'],
+                request.form['gender'],
+                request.form['email'],
+                )
+
+            try:
+                db.session.add(person)
+                db.session.commit()
+                flash('Person added.')
+
+            except IntegrityError as err:
+                flash(err.message, 'error')
+                db.session.rollback()
+
+            except SQLAlchemyError:
+                db.session.rollback()
+                flash('Something went wrong.')
 
         elif request.form['action'] == 'delete':
             person = Person.query.filter_by(groupname=request.form['username']).first()

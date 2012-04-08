@@ -22,9 +22,10 @@ def initdb():
     db.session.add(admins)
     db.session.add(lecturers)
 
-    admin = Person('admin', 'adm1n', 'Administrator', 'admin@localhost')
-    john = Person('john', 'john', 'John Doe', 'john@localhost')
-    jane = Person('jane', 'jane', 'Jane Doe', 'jane@localhost')
+    # username, password, firstname, lastname, displayname, gender, email
+    admin = Person('admin', 'adm1n', '', '', 'Administrator', 'unspecified', 'admin@localhost')
+    john = Person('john', 'john', 'John', 'Doe', 'John Doe', 'male', 'john@localhost')
+    jane = Person('jane', 'jane', 'Jane', 'Doe', 'Jane Doe', 'female', 'jane@localhost')
     admin.groups.append(admins)
     john.groups.append(lecturers)
     john.groups.append(admins)
