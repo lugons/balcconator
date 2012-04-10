@@ -21,7 +21,7 @@
         <a{% if active_page == 'admin' %} class="active"{% endif %} href="{{ url_for('admin_people') }}">People</a>
         <a{% if active_page == 'admin' %} class="active"{% endif %} href="{{ url_for('admin_groups') }}">Groups</a>
         {% endif %}
-        {% if session.username %}<div style="float: right">logged in as: {{ session.username }}</div>{% endif %}
+        {% if session.username %}<div style="float: right">logged in as: <a href="{{ url_for('person', username=session.username) }}">{{ session.username }}</a></div>{% endif %}
     </div>
     {%- with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
