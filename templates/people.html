@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% set active_page = "people" %}
 {% set title = "People" %}
-{% block content %}
+{% block contents %}
     <ul>
         {%- for person in g.people %}
         <li><a href="{{ url_for('person', username=person['username']) }}">{{ person['displayname'] }}</a></li>

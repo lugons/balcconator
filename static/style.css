@@ -1,25 +1,128 @@
-#menu {
-    border: 2px solid #79b;
-    background-color: #bdf;
+body {
+    background: #000;
+    color: #0f0;
+    background-image: url('balccon-single-brain-darkgreen.png');
+    background-repeat: no-repeat;
+    background-position: 90% 50px;
+    background-attachment: fixed;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+#logreg {
+    float: right;
+}
+
+#header {
+    background-image: url('balccon-single-brain-green-small.png');
+    background-repeat: no-repeat;
+    height: 100px;
     text-align: center;
+    border: 1px solid #0f0;
 }
 
-#menu a {
-    padding: 1px 4px;
-    margin: 2px 6px;
-    border: 2px solid #bdf;
+#menubar {
+    text-align: center;
+    border: 1px solid #0f0;
+}
+
+#title {
+    text-decoration: underline;
+}
+
+#main {
+    width: 100%;
+}
+
+#main-left {
+    width: 200px;
+    border: 1px solid #0f0;
+    vertical-align: text-top;
+    padding: 10px;
+}
+
+a {
+    color: #0c0;
+}
+
+a:hover {
+    color: #cfc;
+}
+
+.menu, .menu ul {
+    border: 1px solid #ff0;
+    list-style-type: none;
+}
+
+.menu li > ul {
+    display: none;
+}
+
+.menu li:hover > ul {
+    position: absolute;
+}
+
+.vmenu li:hover > ul {
     display: inline-block;
-    text-decoration: none;
-    background-color: #fff;
-    color: #468;
 }
 
-#menu a.active {
-    border: 2px solid #79b;
+.hmenu li:hover > ul {
+    display: block;
 }
 
-#menu a:hover {
-    border: 2px solid #79b;
+.menu li:hover {
+    color: #fff;
+    background-color: 848;
+}
+
+.vmenu {
+    background-color: #422;
+    padding: 10px;
+    width: 160px;
+}
+
+.hmenu {
+    background-color: #224;
+}
+
+.vmenu > li {
+    display: block;
+    text-align: left;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+}
+
+.hmenu > li {
+    display: inline-block;
+    text-align: left;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+}
+
+.submenuright {
+    background-image: url(arrow-right.png);
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+.submenudown {
+    background-image: url(arrow-down.png);
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+#main-center {
+    width: auto;
+    border: 1px solid #0f0;
+    vertical-align: text-top;
+}
+
+#footer {
+    border: 1px solid #0f0;
 }
 
 #flashes .error {

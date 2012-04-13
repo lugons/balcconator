@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% set active_page = "groups" %}
 {% set title = "Groups - " + g.group.displayname %}
-{% block content %}
+{% block contents %}
     Hello, this is the group {{ g.group.displayname }}. You can contact us at <a href="mailto:{{ g.group.email }}">{{ g.group.email }}</a>.<br/>
     Group members are:
     <ul>

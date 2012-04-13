@@ -145,6 +145,57 @@ def group(groupname):
     return render_template('group.html')
 
 
+@app.route('/news/')
+def news():
+    return render_template('news.html')
+
+
+@app.route('/schedule/')
+def schedule():
+    return render_template('schedule.html')
+
+
+@app.route('/schedule/<int:day>')
+def schedule_day(day):
+    g.day = day
+    return render_template('schedule.html')
+
+
+@app.route('/papers/')
+def papers():
+    return render_template('papers.html')
+
+
+@app.route('/sponsors/')
+def sponsors():
+    return render_template('sponsors.html')
+
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
+
+@app.route('/tickets')
+def tickets():
+    return render_template('tickets.html')
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
+@app.route('/venue')
+def venue():
+    return render_template('venue.html')
+
+
+@app.route('/friends')
+def friends():
+    return render_template('friends.html')
+
+
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if session.get('username', None):

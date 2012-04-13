@@ -1,20 +1,64 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <title>BalCConator - {{ title }}</title>
+    <title>BalCCon 2013 - {{ title }}</title>
 </head>
 <body>
 {% set active_page = active_page|default('index') %}
-    <h1>BalCConator</h1>
-    <div id="menu">
-        <a{% if active_page == 'index' %} class="active"{% endif %} href="{{ url_for('index') }}">Home</a>
-        <a{% if active_page == 'people' %} class="active"{% endif %} href="{{ url_for('people') }}">People</a>
+    <span id="logreg">
+    {% if not session.username %}
+        <a{% if active_page == 'login' %} class="active"{% endif %} href="{{ url_for('login') }}">Login</a> /
+        <a{% if active_page == 'register' %} class="active"{% endif %} href="{{ url_for('register') }}">Register</a>
+    {% else %}
+        <a{% if active_page == 'logout' %} class="active"{% endif %} href="{{ url_for('logout') }}">Logout</a>
+    {% endif %}
+    </span>
+
+    <div id="header">
+        <h1>BalCCon 2013</h1>
+    </div>
+    <div id="menubar">
+    <ul class="menu hmenu">
+        <li{% if active_page == 'index' %} class="active"{% endif %}>
+            <a href="{{ url_for('index') }}">Home</a>
+        </li>
+        <li class="vsubmenu">
+            <a class="submenudown{% if active_page == 'schedule' %} active{% endif %}" href="{{ url_for('schedule') }}">Schedule</a>
+            <ul class="menu vmenu">
+                <li{% if active_page == 'schedule' and active_subpage == 'day1' %} class="active"{% endif %}>
+                    <a href="{{ url_for('schedule_day', day=1) }}">Day 1</a>
+                </li>
+                <li{% if active_page == 'schedule' and active_subpage == 'day2' %} class="active"{% endif %}>
+                    <a href="{{ url_for('schedule_day', day=2) }}">Day 2</a>
+                </li>
+            </ul>
+        </li>
+        <li{% if active_page == 'papers' %} class="active"{% endif %}>
+            <a href="{{ url_for('papers') }}">Call for papers</a>
+        </li>
+<!--
+        <a{% if active_page == 'papers' %} class="active"{% endif %} href="">Instructions</a>
+        <a{% if active_page == 'papers' %} class="active"{% endif %} href="">Submission form</a>
+-->
+        <li{% if active_page == 'sponsors' %} class="active"{% endif %}>
+            <a href="{{ url_for('sponsors') }}">Sponsors</a>
+        </li>
+        <li{% if active_page == 'news' %} class="active"{% endif %}>
+            <a href="{{ url_for('news') }}">News</a>
+        </li>
+        <li{% if active_page == 'people' %} class="active"{% endif %}>
+            <a href="{{ url_for('people') }}">People</a>
+        </li>
+        <li{% if active_page == 'contact' %} class="active"{% endif %}>
+            <a href="{{ url_for('contact') }}">Contact</a>
+        </li>
+    </ul>
+<!--
         <a{% if active_page == 'groups' %} class="active"{% endif %} href="{{ url_for('groups') }}">Groups</a>
-        {% if not session.username %}<a{% if active_page == 'login' %} class="active"{% endif %} href="{{ url_for('login') }}">Login</a>{% endif %}
-        {% if not session.username %}<a{% if active_page == 'register' %} class="active"{% endif %} href="{{ url_for('register') }}">Register</a>{% endif %}
-        {% if session.username %}<a{% if active_page == 'logout' %} class="active"{% endif %} href="{{ url_for('logout') }}">Logout</a>{% endif %}
+-->
+
         {% if session.username == 'admin' %}
         <span>Admin:</span>
         <a{% if active_page == 'admin' %} class="active"{% endif %} href="{{ url_for('admin') }}">Main</a>
@@ -23,6 +67,25 @@
         {% endif %}
         {% if session.username %}<div style="float: right">logged in as: <a href="{{ url_for('person', username=session.username) }}">{{ session.username }}</a></div>{% endif %}
     </div>
+    <table id="main">
+    <td id="main-left">
+        <ul class="menu vmenu">
+            <li class="submenuright">
+                <a href="{{ url_for('tickets') }}">Tickets</a>
+                <ul class="menu vmenu">
+                    <li><a href="{{ url_for('tickets') }}#companies">Companies</a></li>
+                    <li><a href="{{ url_for('tickets') }}#individuals">Individuals</a></li>
+                    <li><a href="{{ url_for('tickets') }}#students">Students</a></li>
+                    <li><a href="{{ url_for('tickets') }}#residents">Local residents</a></li>
+                </ul>
+            </li>
+            <li><a href="{{ url_for('about') }}">About Novi Sad</a></li>
+            <li><a href="{{ url_for('venue') }}">Venue</a></li>
+            <li><a href="{{ url_for('friends') }}">LUGoNS and friends</a></li>
+        </ul>
+        
+    </td>
+    <td id="main-center">
     {%- with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     <ul id="flashes">
@@ -32,10 +95,12 @@
     </ul>
     {% endif %}
     {% endwith -%}
-    <h2>{{ title }}</h2>
-    <div id="content">{% block content %}{% endblock %}</div>
-    <hr />
+    <h2 id="title">{{ title }}</h2>
+    <div id="main-contents">{% block contents %}{% endblock %}</div>
+    </td>
+    </table>
     <div id="footer">
+        Ovde idu sponzori, baneri i tako to.<br/>
         <a href="http://validator.w3.org/check?uri=referer">W3C Validator</a><br />
         session: {{ session }}
     </div>

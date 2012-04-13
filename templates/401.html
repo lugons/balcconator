@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% set active_page = "unauthorized" %}
 {% set title = "Unauthorized" %}
-{% block content %}
+{% block contents %}
     You do not have access to the requested page.
     {% if session.username %}
     The user you are authenticated as does not have permissions to access the requested page.

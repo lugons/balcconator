@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% set active_page = "papers" %}
+{% set title = "Papers" %}
+{% block contents %}
+<h3>Instructions</h3>
+<p>On this page, you can submit a paper for review...</p>
+
+
+
+{% if session.username %}
+<form>
+<input type="file"/>
+<input type="submit" />
+</form>
+{% else %}
+<p>In order to submit a paper for review, you have to log in.</p>
+{% endif %}
+{% endblock %}

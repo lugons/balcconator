@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% set active_page = "people" %}
 {% set title = "People - " + g.person.displayname %}
-{% block content %}
+{% block contents %}
     Hello, I am {{ g.person.displayname }}. You can contact me at <a href="mailto:{{ g.person.email }}">{{ g.person.email }}</a>.<br/>
     Groups this person is a member of:
     <ul>
