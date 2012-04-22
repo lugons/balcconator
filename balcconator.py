@@ -115,6 +115,11 @@ def reverse(s):
     return s[::-1]
 
 
+@app.template_filter(name="textile")
+def textilefilter(s):
+    return textile(s)
+
+
 ##
 # views
 @app.route('/')
