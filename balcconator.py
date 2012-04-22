@@ -169,16 +169,48 @@ def news():
     return render_template('news.html')
 
 
+@app.route('/news/<int:news_id>')
+def news_item(news_id):
+    g.news_item = News.query.filter_by(id=news_id).first()
+    return render_template('news_item.html')
+
+
+@app.route('/news/<int:news_id>/edit', methods=['POST', 'GET'])
+def news_edit(news_id):
+    news_item = News.query.filter_by(id=news_id).first()
+    if request.method == 'POST':
+        news_item.title = request.form['title']
+        news_item.text = request.form['text']
+
+        try:
+            db.session.add(news_item)
+            db.session.commit()
+            flash('News updated.')
+
+        except IntegrityError as err:
+            flash(err.message, 'error')
+            db.session.rollback()
+
+        except SQLAlchemyError:
+            db.session.rollback()
+            flash('Something went wrong.')
+
+        return redirect(url_for('news_item', news_id=news_item.id))
+
+    g.news_item = news_item
+    return render_template('news_edit.html')
+
+
 @app.route('/news/add', methods=['POST', 'GET'])
 def news_add():
     if request.method == 'POST':
-        newsitem = News(
+        news_item = News(
             request.form['title'],
             request.form['text'],
             )
 
         try:
-            db.session.add(newsitem)
+            db.session.add(news_item)
             db.session.commit()
             flash('News added.')
 
@@ -189,6 +221,8 @@ def news_add():
         except SQLAlchemyError:
             db.session.rollback()
             flash('Something went wrong.')
+
+        return redirect(url_for('news_item', news_id=news_item.id))
 
     return render_template('news_add.html')
 
