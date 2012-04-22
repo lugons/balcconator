@@ -16,6 +16,7 @@ from datetime import datetime
 from hashlib import sha1
 #from recaptcha.client import captcha
 
+from textile import textile
 
 ##
 # database models
@@ -308,6 +309,16 @@ def page_not_found(e):
 def unauthorized(e):
     return render_template('401.html'), 404
 
+
+@app.route('/textile2html', methods=['POST', 'GET'])
+def textile2html():
+    if request.method == 'POST':
+        return textile(request.form['data'])
+
+    else:
+        flash('This page needs POST data to process.', 'error')
+        return render_template('index.html')
+        
 
 
 # TODO: remove when finished testing/styling in css
