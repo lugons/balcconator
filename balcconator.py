@@ -68,6 +68,18 @@ class Group(db.Model):
         return '<Group %r>' % self.groupname
 
 
+class News(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(80))
+    text = db.Column(db.Text)
+    date = db.Column(db.DateTime)
+
+    def __init__(self, title, text):
+        self.title = title
+        self.text = text # CLOB
+        self.date = datetime.utcnow()
+    
+
 ##
 # decorator functions
 def login_required(f):
@@ -153,6 +165,7 @@ def group(groupname):
 
 @app.route('/news/')
 def news():
+    g.news = News.query.order_by(News.date.desc()).all()
     return render_template('news.html')
 
 

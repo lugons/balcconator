@@ -2,5 +2,11 @@
 {% set active_page = "news" %}
 {% set title = "News" %}
 {% block contents %}
-    News.
+    {% for newsitem in g.news %}
+    <div class="newsitem" id="newsitem_{{ newsitem.id }}">
+        <h3 class="newstitle">{{ newsitem.title }}</h3>
+        <span class="newsdate">posted on {{ newsitem.date }}</span>
+        <div class="newstext">{{ newsitem.text|textile|safe }}</div>
+    </div>
+    {% endfor %}
 {% endblock %}

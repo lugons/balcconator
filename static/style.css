@@ -140,3 +140,7 @@ td, th {
 form.action {
     display: inline-block;
 }
+
+.newsitem {
+    border: 1px solid #0f0;
+}
