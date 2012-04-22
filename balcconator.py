@@ -169,6 +169,30 @@ def news():
     return render_template('news.html')
 
 
+@app.route('/news/add', methods=['POST', 'GET'])
+def news_add():
+    if request.method == 'POST':
+        newsitem = News(
+            request.form['title'],
+            request.form['text'],
+            )
+
+        try:
+            db.session.add(newsitem)
+            db.session.commit()
+            flash('News added.')
+
+        except IntegrityError as err:
+            flash(err.message, 'error')
+            db.session.rollback()
+
+        except SQLAlchemyError:
+            db.session.rollback()
+            flash('Something went wrong.')
+
+    return render_template('news_add.html')
+
+
 @app.route('/schedule/')
 def schedule():
     return render_template('schedule.html')

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% set active_page = "news_add" %}
+{% set title = "Add News" %}
+{% block contents %}
+    <form method="post">
+        Title:<input name="title" size="80" maxlength="80"/><br/>
+        <textarea name="text" class="textile" cols="80" rows="20"></textarea>
+        <input type="submit"/>
+    </form>
+{% endblock %}
