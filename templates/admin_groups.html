@@ -2,7 +2,7 @@
 {% set active_page = "admin_groups" %}
 {% set title = "Admin - Groups" %}
 {% block contents %}
-    <table border="1px" >
+    <table border="1px">
         <tr><th>groupname</th><th>displayname</th><th>email</th><th>registration_date</th><th>members</th><th>action</th></tr>
         {%- for group in g.groups %}
         <tr>
