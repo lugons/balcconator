@@ -32,7 +32,7 @@ class Person(db.Model):
     firstname = db.Column(db.String(40))
     lastname = db.Column(db.String(40))
     displayname = db.Column(db.String(80))
-    gender = db.Column(db.Enum('male', 'female', 'unspecified'))
+    gender = db.Column(db.Enum('male', 'female', 'unspecified', name='gender'))
     email = db.Column(db.String(120), unique=True)
     registration_date = db.Column(db.DateTime)
     groups = db.relationship('Group', secondary=groupmembers, backref=db.backref('groups', lazy='dynamic'))
