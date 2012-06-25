@@ -18,6 +18,7 @@ from hashlib import sha1
 
 from textile import textile
 
+
 ##
 # database models
 groupmembers = db.Table('groupmembers',
@@ -82,6 +83,7 @@ class News(db.Model):
         self.title = title
         self.text = text # CLOB
         self.date = datetime.utcnow()
+
 
 ##
 # decorator functions
@@ -414,7 +416,6 @@ def textile2html():
     else:
         flash('This page needs POST data to process.', 'error')
         return render_template('index.html')
-
 
 
 # TODO: remove when finished testing/styling in css
