@@ -36,7 +36,7 @@ class Person(db.Model):
     email = db.Column(db.String(120), unique=True)
     registration_date = db.Column(db.DateTime)
     groups = db.relationship('Group', secondary=groupmembers, backref=db.backref('groups', lazy='dynamic'))
-                                
+
     def __init__(self, username, password, firstname, lastname, displayname, gender, email):
         self.username = username
         self.password = sha1(password).hexdigest()
@@ -78,7 +78,6 @@ class News(db.Model):
         self.title = title
         self.text = text # CLOB
         self.date = datetime.utcnow()
-    
 
 ##
 # decorator functions
@@ -103,7 +102,7 @@ def admin_required(f):
             flash('You need to be logged in as an administrator to access that page.', 'error')
             abort(401)
             return redirect(url_for('login'))
-        
+
         return f(*args, **kwargs)
     return decorated_function
 
@@ -111,7 +110,7 @@ def admin_required(f):
 def check_permissions(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # based on the url - request.path: /item/edit, /item/view, /item/list, ... 
+        # based on the url - request.path: /item/edit, /item/view, /item/list, ...
         # based on a function argument: @check_permissions(needuser='foo', needgroup='bar')
         username = session.get('username', None)
         if not username:
@@ -394,7 +393,7 @@ def textile2html():
     else:
         flash('This page needs POST data to process.', 'error')
         return render_template('index.html')
-        
+
 
 
 # TODO: remove when finished testing/styling in css
