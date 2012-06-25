@@ -1,7 +1,7 @@
 body {
     background: #000;
     color: #0c0;
-    background-image: url('balccon-single-brain-darkgreen.png');
+    background-image: url('background.png');
     background-repeat: no-repeat;
     background-position: 90% 50px;
     background-attachment: fixed;
@@ -17,8 +17,6 @@ table {
 }
 
 #header {
-    background-image: url('balccon-single-brain-green-small.png');
-    background-repeat: no-repeat;
     height: 100px;
     text-align: center;
     border: 1px solid #0f0;
