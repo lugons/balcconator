@@ -382,7 +382,7 @@ def page_not_found(e):
 
 @app.errorhandler(401)
 def unauthorized(e):
-    return render_template('401.html'), 404
+    return render_template('401.html'), 401
 
 
 @app.route('/textile2html', methods=['POST', 'GET'])
