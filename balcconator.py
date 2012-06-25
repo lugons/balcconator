@@ -37,7 +37,9 @@ class Person(db.Model):
     registration_date = db.Column(db.DateTime)
     groups = db.relationship('Group', secondary=groupmembers, backref=db.backref('groups', lazy='dynamic'))
 
-    def __init__(self, username, password, firstname, lastname, displayname, gender, email):
+    permission_news = db.Column(db.Boolean)
+
+    def __init__(self, username, password, firstname, lastname, displayname, gender, email, permission_news=False):
         self.username = username
         self.password = sha1(password).hexdigest()
         self.firstname = firstname
@@ -46,6 +48,8 @@ class Person(db.Model):
         self.gender = gender
         self.email = email
         self.registration_date = datetime.utcnow()
+
+        self.permission_news = permission_news
 
     def __repr__(self):
         return '<Person %r>' % self.username
@@ -121,6 +125,21 @@ def check_permissions(f):
     return decorated_function
 
 
+def permission_news(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        username = session.get('username', None)
+        if not username:
+            abort(401)
+
+        permission = Person.query.filter_by(username=username).first().permission_news
+        if not permission:
+            abort(401)
+
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 @app.template_filter()
 def reverse(s):
     return s[::-1]
@@ -175,6 +194,7 @@ def news_item(news_id):
 
 
 @app.route('/news/<int:news_id>/edit', methods=['POST', 'GET'])
+@permission_news
 def news_edit(news_id):
     news_item = News.query.filter_by(id=news_id).first()
     if request.method == 'POST':
@@ -201,6 +221,7 @@ def news_edit(news_id):
 
 
 @app.route('/news/add', methods=['POST', 'GET'])
+@permission_news
 def news_add():
     if request.method == 'POST':
         news_item = News(
