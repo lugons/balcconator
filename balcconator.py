@@ -34,20 +34,23 @@ class Person(db.Model):
     lastname = db.Column(db.String(40))
     displayname = db.Column(db.String(80))
     gender = db.Column(db.Enum('male', 'female', 'unspecified', name='gender'))
-    email = db.Column(db.String(120), unique=True)
+    email = db.Column(db.String(120))
     registration_date = db.Column(db.DateTime)
     groups = db.relationship('Group', secondary=groupmembers, backref=db.backref('groups', lazy='dynamic'))
 
     permission_news = db.Column(db.Boolean)
 
-    def __init__(self, username, password, firstname, lastname, displayname, gender, email, permission_news=False):
+    def __init__(self, username, password='', email='', firstname='', lastname='', displayname='', gender='unspecified', permission_news=False):
         self.username = username
         self.password = sha1(password).hexdigest()
+        self.email = email
         self.firstname = firstname
         self.lastname = lastname
-        self.displayname = displayname
+        if not displayname:
+            self.displayname = username
+        else:
+            self.displayname = displayname
         self.gender = gender
-        self.email = email
         self.registration_date = datetime.utcnow()
 
         self.permission_news = permission_news
