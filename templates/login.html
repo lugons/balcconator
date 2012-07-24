@@ -2,9 +2,10 @@
 {% set active_page = "login" %}
 {% set title = "Login" %}
 {% block contents %}
-    <form action="" method="post">
-    <p>Username: <input type=text name=username>
-    <p>Password: <input type=password name=password>
-    <p><input type=submit value=Login>
+    <form action="" method="post"></p>
+    <p>Username: <input type="text" name="username"></p>
+    <p>Password: <input type="password" name="password"></p>
+    <input type="hidden" name="referrer" value="{{ g.referrer }}"/>
+    <p><input type="submit" value="Login"></p>
     </form>
 {% endblock %}
