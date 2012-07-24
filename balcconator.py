@@ -232,7 +232,7 @@ def news_add():
         news_item = News(
             request.form['title'],
             request.form['text'],
-            )
+        )
 
         try:
             db.session.add(news_item)
@@ -378,7 +378,7 @@ def admin_people():
                 request.form['displayname'],
                 request.form['gender'],
                 request.form['email'],
-                )
+            )
 
             try:
                 db.session.add(person)
