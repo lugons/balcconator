@@ -314,9 +314,10 @@ def login():
             # valid login
             session['username'] = person.username
             flash('Login successful.')
-            return redirect(url_for('index'))
+            return redirect(request.form['referrer'] or url_for('person', username=person.username))
 
     else:
+        g.referrer = request.referrer or ''
         return render_template('login.html')
 
 
@@ -324,7 +325,7 @@ def login():
 def logout():
     session.pop('username', None)
     flash('Logged out. Thank you for your visit.')
-    return redirect(url_for('index'))
+    return redirect(request.referrer or url_for('index'))
 
 
 @app.route('/register')
