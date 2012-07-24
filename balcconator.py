@@ -329,11 +329,40 @@ def logout():
     return redirect(request.referrer or url_for('index'))
 
 
-@app.route('/register')
+@app.route('/register', methods=['POST', 'GET'])
 def register():
     if session.get('username', None):
         flash('You are already logged in. Please log out before registering a new account.')
         return redirect(url_for('index'))
+
+    if request.method == 'POST':
+        if request.form['password'] != request.form['confirm_password']:
+            flash('The passwords do not match', 'error')
+
+        elif Person.query.filter_by(username=request.form['username']).first() != None:
+            flash('The username is already taken, please choose a different one', 'error')
+
+        else:
+            person = Person(
+                username=request.form['username'],
+                password=request.form['password'],
+                email=request.form['email']
+            )
+
+            try:
+                db.session.add(person)
+                db.session.commit()
+                flash('Registration successful.')
+                session['username'] = person.username
+                return redirect(url_for('person', username=person.username))
+
+            except IntegrityError as err:
+                flash(err.message, 'error')
+                db.session.rollback()
+
+            except SQLAlchemyError:
+                db.session.rollback()
+                flash('Something went wrong.')
 
     return render_template('register.html')
 

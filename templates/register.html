@@ -2,5 +2,12 @@
 {% set active_page = "register" %}
 {% set title = "Register" %}
 {% block contents %}
-    Registration page.
+    <form action="" method="post">
+    <p>Username: <input type="text" name="username"></p>
+    <p>Password: <input type="password" name="password"></p>
+    <p>Confirm password: <input type="password" name="confirm_password"></p>
+    <p>E-mail address: <input type="email" name="email"></p>
+    <!-- captcha -->
+    <p><input type="submit" value="Register"></p>
+    </form>
 {% endblock %}
