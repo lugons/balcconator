@@ -308,6 +308,7 @@ def login():
         person = Person.query.filter_by(username=request.form['username'], password=sha1(request.form['password']).hexdigest()).first()
         if person is None:
             flash('Invalid username or password. Please try again.', 'error')
+            g.referrer = request.form['referrer']
             return render_template('login.html')
 
         else:
