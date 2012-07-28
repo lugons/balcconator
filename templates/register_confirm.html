@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% set active_page = "todo" %}
+{% set title = "Registration confirmation" %}
+{% block contents %}
+    <form action="" method="get">
+    <p>Username: <input type="text" name="username" value="{{ g.username }}"/></p>
+    <p>Confirmation code: <input type="code" name="code" value="{{ g.code }}"/></p>
+    <p><input type="submit" value="Confirm"></p>
+    </form>
+{% endblock %}

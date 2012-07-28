@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import config
+import config, os
 
 from flask import Flask, render_template, make_response, request, g, session, flash, redirect, url_for, abort
 app = Flask(__name__)
@@ -10,6 +10,9 @@ app = Flask(__name__)
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from flaskext.sqlalchemy import SQLAlchemy
 db = SQLAlchemy(app)
+
+from flaskext.mail import Mail, Message
+mail = Mail(app)
 
 from functools import wraps
 from datetime import datetime
@@ -36,11 +39,12 @@ class Person(db.Model):
     gender = db.Column(db.Enum('male', 'female', 'unspecified', name='gender'))
     email = db.Column(db.String(120))
     registration_date = db.Column(db.DateTime)
+    confirmation_code = db.Column(db.String(40), nullable=True)
     groups = db.relationship('Group', secondary=groupmembers, backref=db.backref('groups', lazy='dynamic'))
 
     permission_news = db.Column(db.Boolean)
 
-    def __init__(self, username, password='', email='', firstname='', lastname='', displayname='', gender='unspecified', permission_news=False):
+    def __init__(self, username, password='', email='', firstname='', lastname='', displayname='', gender='unspecified', confirmation_code=None, permission_news=False):
         self.username = username
         self.password = sha1(password).hexdigest()
         self.email = email
@@ -52,6 +56,7 @@ class Person(db.Model):
             self.displayname = displayname
         self.gender = gender
         self.registration_date = datetime.utcnow()
+        self.confirmation_code = confirmation_code
 
         self.permission_news = permission_news
 
@@ -305,7 +310,7 @@ def login():
         return redirect(url_for('index'))
 
     if request.method == 'POST':
-        person = Person.query.filter_by(username=request.form['username'], password=sha1(request.form['password']).hexdigest()).first()
+        person = Person.query.filter_by(username=request.form['username'], password=sha1(request.form['password']).hexdigest(), confirmation_code=None).first()
         if person is None:
             flash('Invalid username or password. Please try again.', 'error')
             g.referrer = request.form['referrer']
@@ -343,18 +348,24 @@ def register():
             flash('The username is already taken, please choose a different one', 'error')
 
         else:
+            confirmation_code=sha1(os.urandom(400)).hexdigest()
+            username=request.form['username']
+            email=request.form['email']
             person = Person(
-                username=request.form['username'],
+                username=username,
                 password=request.form['password'],
-                email=request.form['email']
+                email=email,
+                confirmation_code=confirmation_code
             )
 
             try:
                 db.session.add(person)
                 db.session.commit()
-                flash('Registration successful.')
-                session['username'] = person.username
-                return redirect(url_for('person', username=person.username))
+                message="Hello, %s\n\nSomeone has registered for BalCCon with this e-mail address.\nIf it was not done by you, just ignore this message.\nOtherwise, please click the following link to confirm your registration:\n%s\n\nHave a nice day,\nBalCCon administration team" % (username, url_for('register_confirm', _external=True, username=username, code=confirmation_code))
+                msg = Message(subject="BalCCon registration",recipients=[email],body=message)
+                mail.send(msg)    
+                flash('Confirmation e-mail sent.')
+                return redirect(url_for('register_confirm', username=username))
 
             except IntegrityError as err:
                 flash(err.message, 'error')
@@ -366,7 +377,37 @@ def register():
 
     return render_template('register.html')
 
+@app.route('/register/confirm')
+def register_confirm():
+    code = username = ''
+    if 'code' in request.args.keys():
+        code = request.args['code']
+    if 'username' in request.args.keys():
+        username = request.args['username']
 
+    if code and username:
+        try:
+            person = Person.query.filter_by(username=username, confirmation_code=code).first()
+            print 'person:', person
+            person.confirmation_code=None
+            db.session.add(person)
+            db.session.commit()
+            flash('Registration confirmed')
+            session['username'] = person.username
+            return redirect(url_for('person', username=person.username))
+
+        except IntegrityError as err:
+            flash(err.message, 'error')
+            db.session.rollback()
+
+        except SQLAlchemyError:
+            db.session.rollback()
+            flash('Something went wrong.')
+
+    g.username = username
+    g.code = code
+    return render_template('register_confirm.html')
+    
 @app.route('/admin/')
 @admin_required
 def admin():
