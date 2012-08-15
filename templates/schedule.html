@@ -2,40 +2,16 @@
 {% set active_page = "schedule" %}
 {% set title = "Schedule" %}
 {% block contents %}
-    <h2>Day 1</h2>
     <table>
     <tr><th>who</th><th>what</th><th>when</th><th>where</th></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
+    {%- for event in g.events %}
+    <tr>
+        <td><a href="{{ url_for('person', username=event['person']) }}">{{ event['person'] }}</a></td>
+        <td>{{ event['title'] }}</td>
+        <!-- <td>{{ event['text'] }}</td> -->
+        <td>{{ event['start'] }} - {{ event['end'] }}</td>
+        <td>{{ event['venue'].title() }}</td>
+    </tr>
+    {%- endfor %}
     </table>
-
-    <h2>Day 2</h2>
-    <table>
-    <tr><th>who</th><th>what</th><th>when</th><th>where</th></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    <tr><td>John</td><td>Something</td><td>10:15 - 11:45</td><td>Room 1</td></tr>
-    </table>
-
 {% endblock %}
