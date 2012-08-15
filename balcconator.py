@@ -114,6 +114,10 @@ class Event(db.Model):
         self.start = start
         self.end = end
 
+    def __repr__(self):
+        return '<Event %r>' % self.id
+
+
 class Venue{db.Model):
     id = db.Column(db.String(40), primary_key=True)
     title = db.Column(db.String(80))
