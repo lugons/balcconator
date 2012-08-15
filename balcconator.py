@@ -280,6 +280,7 @@ def news_add():
 
 @app.route('/schedule/')
 def schedule():
+    g.events = Event.query.order_by(Event.start.asc()).all()
     return render_template('schedule.html')
 
 
