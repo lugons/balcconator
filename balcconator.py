@@ -42,6 +42,7 @@ class Person(db.Model):
     registration_date = db.Column(db.DateTime)
     confirmation_code = db.Column(db.String(40), nullable=True)
     groups = db.relationship('Group', secondary=groupmembers, backref=db.backref('groups', lazy='dynamic'))
+    events = db.relationship('Event', backref='events', lazy='dynamic')
 
     permission_news = db.Column(db.Boolean)
 
@@ -92,6 +93,22 @@ class News(db.Model):
         self.title = title
         self.text = text # CLOB
         self.date = datetime.utcnow()
+
+
+class Event(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    person = db.Column(db.String(40), db.ForeignKey('person.username'))
+    title = db.Column(db.String(80))
+    text = db.Column(db.Text)
+    start = db.Column(db.DateTime)
+    end = db.Column(db.DateTime)
+
+    def __init__(self, person, title, text, start, end):
+        self.person = person
+        self.title = title
+        self.text = text
+        self.start = start
+        self.end = end
 
 
 ##
