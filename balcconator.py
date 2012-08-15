@@ -3,6 +3,7 @@
 
 import config, os
 
+from werkzeug.utils import secure_filename
 from flask import Flask, render_template, make_response, request, g, session, flash, redirect, url_for, abort
 app = Flask(__name__)
 
@@ -346,6 +347,9 @@ def register():
 
         elif Person.query.filter_by(username=request.form['username']).first() != None:
             flash('The username is already taken, please choose a different one', 'error')
+
+        elif request.form['username'] != secure_filename(request.form['username']):
+            flash('The username contains characters that are not allowed, please choose a different one', 'error')
 
         else:
             confirmation_code=sha1(os.urandom(400)).hexdigest()
