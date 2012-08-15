@@ -13,7 +13,7 @@ def hello():
 
 @manager.command
 def initdb():
-    from balcconator import db, Person, Group, Event
+    from balcconator import db, Person, Group, Event, Venue
     db.drop_all()
     db.create_all()
 
@@ -37,15 +37,24 @@ def initdb():
 
     db.session.commit()
 
+    # id, title, text, address
+    sala1 = Venue('sala1', 'Sala 1', 'Velika sala na 1. spratu', 'Ulica i broj')
+    sala2 = Venue('sala2', 'Sala 2', 'Mala sala na 2. spratu', 'Ulica i broj')
+    restoran = Venue('restoran', 'Restoran', 'Restoran u hotelu', u'Sunčani kej bb')
+    db.session.add(sala1)
+    db.session.add(sala2)
+    db.session.add(restoran)
+    db.session.commit()
+
     from datetime import datetime
     # person, title, text, start, end
-    ev1 = Event('admin', 'Welcome Party', 'The opening ceremony of the conference', datetime(2013, 9, 1, 20, 0), datetime(2013, 9, 1, 23, 59))
+    ev1 = Event('admin', 'Welcome Party', 'The opening ceremony of the conference', datetime(2013, 9, 1, 20, 0), datetime(2013, 9, 1, 23, 59), 'restoran')
     db.session.add(ev1)
     db.session.commit()
 
-    ev2 = Event('john', 'John 101', 'Foreword by John', datetime(2013, 9, 2, 10, 0), datetime(2013, 9, 2, 12, 59))
-    ev3 = Event('jane', 'Jane 101', 'Foreword by Jane', datetime(2013, 9, 2, 13, 0), datetime(2013, 9, 1, 13, 59))
-    ev4 = Event('john', 'John 102', 'Continuation by John', datetime(2013, 9, 2, 14, 0), datetime(2013, 9, 1, 14, 59))
+    ev2 = Event('john', 'John 101', 'Foreword by John', datetime(2013, 9, 2, 10, 0), datetime(2013, 9, 2, 12, 59), 'sala1')
+    ev3 = Event('jane', 'Jane 101', 'Foreword by Jane', datetime(2013, 9, 2, 13, 0), datetime(2013, 9, 1, 13, 59), 'sala2')
+    ev4 = Event('john', 'John 102', 'Continuation by John', datetime(2013, 9, 2, 14, 0), datetime(2013, 9, 1, 14, 59), 'sala1')
     db.session.add(ev2)
     db.session.add(ev3)
     db.session.add(ev4)
