@@ -118,7 +118,7 @@ class Event(db.Model):
         return '<Event %r>' % self.id
 
 
-class Venue{db.Model):
+class Venue(db.Model):
     id = db.Column(db.String(40), primary_key=True)
     title = db.Column(db.String(80))
     text = db.Column(db.Text)
