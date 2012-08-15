@@ -107,12 +107,13 @@ class Event(db.Model):
     end = db.Column(db.DateTime)
     venue = db.Column(db.String(40), db.ForeignKey('venue.id'))
 
-    def __init__(self, person, title, text, start, end):
+    def __init__(self, person, title, text, start, end, venue):
         self.person = person
         self.title = title
         self.text = text
         self.start = start
         self.end = end
+        self.venue = venue
 
     def __repr__(self):
         return '<Event %r>' % self.id
@@ -123,7 +124,7 @@ class Venue(db.Model):
     title = db.Column(db.String(80))
     text = db.Column(db.Text)
     address = db.Column(db.Text)
-    events = db.relationship('Event', backref='events', lazy='dynamic')
+    events = db.relationship('Event', backref='venue_events', lazy='dynamic')
 
     def __init__(self, id, title, text, address):
         self.id = id
