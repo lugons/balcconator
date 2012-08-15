@@ -94,6 +94,9 @@ class News(db.Model):
         self.text = text # CLOB
         self.date = datetime.utcnow()
 
+    def __repr__(self):
+        return '<News %r>' % self.id
+
 
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
