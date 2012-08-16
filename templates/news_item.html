@@ -6,5 +6,8 @@
         <h3 class="news_title">{{ g.news_item.title }}</h3>
         <span class="news_date">posted on {{ g.news_item.date }}</span>
         <div class="news_text">{{ g.news_item.text|textile|safe }}</div>
+        {% if g.permission_news %}
+        <a href="{{ url_for('news_edit', news_id = g.news_item.id) }}">Edit</a>
+        {% endif %}
     </div>
 {% endblock %}
