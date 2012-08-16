@@ -26,6 +26,7 @@ def initdb():
     admin = Person('admin', 'adm1n', 'admin@localhost', '', '', 'Administrator', 'unspecified')
     john = Person('john', 'john', 'john@localhost', 'John', 'Doe', 'John Doe', 'male')
     jane = Person('jane', 'jane', 'jane@localhost', 'Jane', 'Doe', 'Jane Doe', 'female')
+    reviewer = Person('reviewer', 'reviewer', 'reviewer@localhost', '', '', 'Reviewer', 'unspecified', permission_reviewer=True)
     admin.groups.append(admins)
     john.groups.append(lecturers)
     john.groups.append(admins)
@@ -34,6 +35,7 @@ def initdb():
     db.session.add(admin)
     db.session.add(john)
     db.session.add(jane)
+    db.session.add(reviewer)
 
     db.session.commit()
 
