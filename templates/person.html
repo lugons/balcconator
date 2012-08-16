@@ -3,10 +3,45 @@
 {% set title = "People - " + g.person.displayname %}
 {% block contents %}
     Hello, I am {{ g.person.displayname }}. You can contact me at <a href="mailto:{{ g.person.email }}">{{ g.person.email }}</a>.<br/>
+
     Groups this person is a member of:
     <ul>
         {% for group in g.person.groups %}
         <li><a href="{{ url_for('group', groupname=group.groupname) }}">{{ group.displayname }}</a></li>
         {% endfor %}
     </ul>
+
+    {% if g.documents_public %}
+    Public documents
+    <ul>
+        {% for document in g.documents_public %}
+        <li>{{ document }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if session.username == g.person.username %}
+
+    {% if g.documents_pending %}
+    Documents pending review
+    <ul>
+        {% for document in g.documents_pending %}
+        <li>{{ document }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <form name="documentupload" method="post" enctype="multipart/form-data">
+        <fieldset>
+            <legend>Upload a document</legend>
+            <p>Filename will be made <i>web safe</i>. This includes, but is not limited to: underscores being placed instead of spaces, slashes and hashmarks being removed. Thank you for understanding.</p>
+            <input type="hidden" name="whichform" value="documentupload"/>
+            <div><input type="file" name="file"/></div>
+            <div>
+                <input type="submit"/>
+                <input type="reset"/>
+            </div>
+        </fieldset>
+    </form>
+    {% endif %}
 {% endblock %}
