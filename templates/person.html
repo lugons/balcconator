@@ -20,8 +20,7 @@
     </ul>
     {% endif %}
 
-    {% if session.username == g.person.username %}
-
+    {% if session.username == g.person.username or g.permission_reviewer %}
     {% if g.documents_pending %}
     Documents pending review
     <ul>
@@ -30,7 +29,9 @@
         {% endfor %}
     </ul>
     {% endif %}
+    {% endif %}
 
+    {% if session.username == g.person.username %}
     <form name="documentupload" method="post" enctype="multipart/form-data">
         <fieldset>
             <legend>Upload a document</legend>
