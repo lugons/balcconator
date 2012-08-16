@@ -178,21 +178,6 @@ def fetch_permissions():
         g.permission_reviewer = user.permission_reviewer
 
 
-def permission_news(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        username = session.get('username', None)
-        if not username:
-            abort(401)
-
-        permission = Person.query.filter_by(username=username).first().permission_news
-        if not permission:
-            abort(401)
-
-        return f(*args, **kwargs)
-    return decorated_function
-
-
 @app.template_filter()
 def reverse(s):
     return s[::-1]
@@ -288,8 +273,10 @@ def news_item(news_id):
 
 
 @app.route('/news/<int:news_id>/edit', methods=['POST', 'GET'])
-@permission_news
 def news_edit(news_id):
+    if not g.permission_news:
+        abort(401)
+
     news_item = News.query.filter_by(id=news_id).first()
     if request.method == 'POST':
         news_item.title = request.form['title']
@@ -315,8 +302,10 @@ def news_edit(news_id):
 
 
 @app.route('/news/add', methods=['POST', 'GET'])
-@permission_news
 def news_add():
+    if not g.permission_news:
+        abort(401)
+
     if request.method == 'POST':
         news_item = News(
             request.form['title'],
