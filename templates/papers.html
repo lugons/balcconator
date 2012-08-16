@@ -3,16 +3,9 @@
 {% set title = "Papers" %}
 {% block contents %}
 <h3>Instructions</h3>
-<p>On this page, you can submit a paper for review...</p>
-
-
-
 {% if session.username %}
-<form>
-<input type="file"/>
-<input type="submit"/>
-</form>
+<p>You can upload a document for review from your <a href="{{ url_for('person', username = session.username) }}">user page</a>.</p>
 {% else %}
-<p>In order to submit a paper for review, you have to log in.</p>
+<p>In order to submit a document for review, <a href="{{ url_for('login') }}">log in</a> and then upload a document from your user page. If you do not have a username, <a href="{{ url_for('register') }}">register</a> first.</p>
 {% endif %}
 {% endblock %}
