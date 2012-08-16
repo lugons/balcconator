@@ -174,6 +174,7 @@ def fetch_permissions():
         g.permission_reviewer = False
 
     else:
+        user = Person.query.filter_by(username=username).first()
         g.permission_news = user.permission_news
         g.permission_reviewer = user.permission_reviewer
 
