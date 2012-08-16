@@ -166,21 +166,16 @@ def admin_required(f):
     return decorated_function
 
 
-def fetch_permissions(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        g.username = session.get('username', None)
-        if not username:
-            g.permission_news = False
-            g.permission_reviewer = False
+@app.before_request
+def fetch_permissions():
+    username = session.get('username', None)
+    if not username:
+        g.permission_news = False
+        g.permission_reviewer = False
 
-        else:
-            user = Person.query.filter_by(username=username).first()
-            g.permission_news = user.permission_news
-            g.permission_reviewer = user.permission_reviewer
-
-        return f(*args, **kwargs)
-    return decorated_function
+    else:
+        g.permission_news = user.permission_news
+        g.permission_reviewer = user.permission_reviewer
 
 
 def permission_news(f):
