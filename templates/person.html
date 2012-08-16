@@ -15,7 +15,7 @@
     Public documents
     <ul>
         {% for document in g.documents_public %}
-        <li>{{ document }}</li>
+        <li><a href="{{ url_for('document_public', username=g.person.username, filename=document) }}">{{ document }}</a></li>
         {% endfor %}
     </ul>
     {% endif %}
@@ -26,7 +26,7 @@
     Documents pending review
     <ul>
         {% for document in g.documents_pending %}
-        <li>{{ document }}</li>
+        <li><a href="{{ url_for('document_pending', username=g.person.username, filename=document) }}">{{ document }}</a></li>
         {% endfor %}
     </ul>
     {% endif %}

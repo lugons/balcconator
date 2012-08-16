@@ -4,7 +4,7 @@
 import config, os
 
 from werkzeug.utils import secure_filename
-from flask import Flask, render_template, make_response, request, g, session, flash, redirect, url_for, abort
+from flask import Flask, render_template, make_response, request, g, session, flash, redirect, url_for, abort, send_from_directory
 app = Flask(__name__)
 
 #from sqlalchemy.dialects import postgresql
@@ -246,6 +246,21 @@ def person(username):
 
     g.person = Person.query.filter_by(username=username).first()
     return render_template('person.html')
+
+
+@app.route('/people/<username>/<filename>')
+def document_public(username, filename):
+    path = os.path.join(app.config['DOCUMENTS_LOCATION'], 'public', username)
+    return send_from_directory(path, filename)
+
+
+@app.route('/people/<username>/pending/<filename>')
+def document_pending(username, filename):
+    if username == session.get('username', None): # TODO: expand this to include reviewers, they also need access to pending files
+        path = os.path.join(app.config['DOCUMENTS_LOCATION'], 'pending', username)
+        return send_from_directory(path, filename)
+
+    abort(401)
 
 
 @app.route('/groups/')
