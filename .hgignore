@@ -3,3 +3,4 @@ syntax: glob
 *~
 config.py
 balcconator.db
+documents/
