@@ -216,8 +216,34 @@ def people():
     return render_template('people.html')
 
 
-@app.route('/people/<username>/')
+@app.route('/people/<username>/', methods=['POST', 'GET'])
 def person(username):
+    if request.method == 'POST':
+        # allow POST only if the correct user is logged in
+        if not username == session.get('username', None):
+            flash('The access to that page is restricted. You need to be logged in as a user with proper permissions.', 'error')
+            return redirect(url_for('login'))
+
+        else:
+            if request.form['whichform'] == 'documentupload':
+                file = request.files['file']
+                filename = secure_filename(file.filename)
+                path = os.path.join(app.config['DOCUMENTS_LOCATION'], 'pending', username)
+                if not os.path.exists(path):
+                    os.makedirs(path)
+                file.save(os.path.join(path, filename))
+                flash('Document uploaded. Now it needs to be approved by a reviewer.')
+
+    try:
+        g.documents_public = os.listdir(os.path.join(app.config['DOCUMENTS_LOCATION'], 'public', username))
+    except:
+        g.documents_public = []
+
+    try:
+        g.documents_pending = os.listdir(os.path.join(app.config['DOCUMENTS_LOCATION'], 'pending', username))
+    except:
+        g.documents_pending = []
+
     g.person = Person.query.filter_by(username=username).first()
     return render_template('person.html')
 
