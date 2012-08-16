@@ -45,8 +45,9 @@ class Person(db.Model):
     events = db.relationship('Event', backref='events', lazy='dynamic')
 
     permission_news = db.Column(db.Boolean)
+    permission_reviewer = db.Column(db.Boolean)
 
-    def __init__(self, username, password='', email='', firstname='', lastname='', displayname='', gender='unspecified', confirmation_code=None, permission_news=False):
+    def __init__(self, username, password='', email='', firstname='', lastname='', displayname='', gender='unspecified', confirmation_code=None, permission_news=False, permission_reviewer=False):
         self.username = username
         self.password = sha1(password).hexdigest()
         self.email = email
@@ -61,6 +62,7 @@ class Person(db.Model):
         self.confirmation_code = confirmation_code
 
         self.permission_news = permission_news
+        self.permission_reviewer = permission_reviewer
 
     def __repr__(self):
         return '<Person %r>' % self.username
