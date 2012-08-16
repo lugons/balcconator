@@ -166,20 +166,6 @@ def admin_required(f):
     return decorated_function
 
 
-def check_permissions(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        # based on the url - request.path: /item/edit, /item/view, /item/list, ...
-        # based on a function argument: @check_permissions(needuser='foo', needgroup='bar')
-        username = session.get('username', None)
-        if not username:
-            flash('The access to that page is restricted. You need to be logged in as a user with proper permissions.', 'error')
-            return redirect(url_for('login'))
-
-        return f(*args, **kwargs)
-    return decorated_function
-
-
 def fetch_permissions(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
