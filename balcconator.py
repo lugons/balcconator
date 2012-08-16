@@ -451,7 +451,7 @@ def register():
                 db.session.commit()
                 message="Hello, %s\n\nSomeone has registered for BalCCon with this e-mail address.\nIf it was not done by you, just ignore this message.\nOtherwise, please click the following link to confirm your registration:\n%s\n\nHave a nice day,\nBalCCon administration team" % (username, url_for('register_confirm', _external=True, username=username, code=confirmation_code))
                 msg = Message(subject="BalCCon registration",recipients=[email],body=message)
-                mail.send(msg)    
+                mail.send(msg)
                 flash('Confirmation e-mail sent.')
                 return redirect(url_for('register_confirm', username=username))
 
@@ -495,7 +495,7 @@ def register_confirm():
     g.username = username
     g.code = code
     return render_template('register_confirm.html')
-    
+
 @app.route('/admin/')
 @admin_required
 def admin():
