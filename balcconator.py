@@ -242,7 +242,7 @@ def document_public(username, filename):
 
 @app.route('/people/<username>/pending/<filename>')
 def document_pending(username, filename):
-    if username == session.get('username', None): # TODO: expand this to include reviewers, they also need access to pending files
+    if username == session.get('username', None) or g.permission_reviewer:
         path = os.path.join(app.config['DOCUMENTS_LOCATION'], 'pending', username)
         return send_from_directory(path, filename)
 
