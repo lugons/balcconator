@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% set active_page = "venue" %}
+{% set title = "Venue" %}
+{% block contents %}
+    {% for venue in g.venues %}
+    <div class="venue">
+    <h2 id="{{ venue.id }}"><a href="#{{ venue.id }}">{{ venue.title }}</a></h2>
+    <div>{{ venue.text }}</div>
+    <div>Address: {{ venue.address }}</div>
+    <div>Events at this venue:
+        <ul>
+        {% for event in venue.events %}
+        <li>{{ event.title }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    </div>
+    {% endfor %}
+{% endblock %}

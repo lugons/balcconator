@@ -10,7 +10,7 @@
         <td>{{ event['title'] }}</td>
         <!-- <td>{{ event['text'] }}</td> -->
         <td>{{ event['start'] }} - {{ event['end'] }}</td>
-        <td>{{ event['venue'].title() }}</td>
+        <td><a href="{{ url_for('venue', _anchor=event['venue']) }}">{{ event['venue'] }}</a></td>
     </tr>
     {%- endfor %}
     </table>

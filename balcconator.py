@@ -370,6 +370,7 @@ def about():
 
 @app.route('/venue')
 def venue():
+    g.venues = Venue.query.all()
     return render_template('venue.html')
 
 
