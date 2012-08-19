@@ -19,12 +19,10 @@ table {
 #header {
     height: 100px;
     text-align: center;
-    border: 1px solid #0f0;
 }
 
 #menubar {
     text-align: center;
-    border: 1px solid #0f0;
 }
 
 #title {
@@ -37,12 +35,15 @@ table {
 
 #main-left {
     width: 200px;
-    border: 1px solid #0f0;
+    border-right: 1px solid #0f0;
     vertical-align: text-top;
     padding: 10px;
 }
 
 #main-center {
+    width: auto;
+    border-left: 1px solid #0f0;
+    vertical-align: text-top;
     padding: 10px;
 }
 
@@ -60,7 +61,7 @@ a:hover {
 }
 
 .menu, .menu ul {
-    border: 1px solid #ff0;
+    border: 1px solid #0f0;
     list-style-type: none;
 }
 
@@ -82,17 +83,18 @@ a:hover {
 
 .menu li:hover {
     color: #fff;
-    background-color: 848;
 }
 
 .vmenu {
-    background-color: #422;
+    background-color: #020;
     padding: 10px;
     width: 160px;
+    font-weight: bold;
 }
 
 .hmenu {
-    background-color: #224;
+    background-color: #020;
+    font-weight: bold;
 }
 
 .vmenu > li {
@@ -100,7 +102,6 @@ a:hover {
     text-align: left;
     margin-top: 5px;
     margin-bottom: 5px;
-    border: 1px solid #ccc;
 }
 
 .hmenu > li {
@@ -108,7 +109,6 @@ a:hover {
     text-align: left;
     margin-left: 5px;
     margin-right: 5px;
-    border: 1px solid #ccc;
 }
 
 .submenuright {
@@ -123,14 +123,8 @@ a:hover {
     background-position: right center;
 }
 
-#main-center {
-    width: auto;
-    border: 1px solid #0f0;
-    vertical-align: text-top;
-}
-
 #footer {
-    border: 1px solid #0f0;
+    border-top: 1px solid #0f0;
 }
 
 #flashes .error {
@@ -150,9 +144,23 @@ form.action {
 }
 
 .news_item {
-    border: 1px solid #0f0;
+
 }
 
 .venue {
+
+}
+
+.box {
     border: 1px solid #0f0;
+    background-color: #030;
+    padding: 5px;
+}
+
+.box a {
+    color: #2f2;
+}
+
+.box a:hover {
+    color: #fff;
 }
