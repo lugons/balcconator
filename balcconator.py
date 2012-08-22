@@ -21,6 +21,7 @@ from hashlib import sha1
 #from recaptcha.client import captcha
 
 from textile import textile
+from cgi import escape
 
 
 ##
@@ -186,7 +187,7 @@ def reverse(s):
 
 @app.template_filter(name="textile")
 def textilefilter(s):
-    return textile(s)
+    return textile(escape(s))
 
 
 ##
@@ -586,7 +587,7 @@ def unauthorized(e):
 @app.route('/textile2html', methods=['POST', 'GET'])
 def textile2html():
     if request.method == 'POST':
-        return textile(request.form['data'])
+        return textilefilter(request.form['data'])
 
     else:
         flash('This page needs POST data to process.', 'error')
