@@ -164,3 +164,7 @@ form.action {
 .box a:hover {
     color: #fff;
 }
+
+.inline {
+    display: inline;
+}
