@@ -211,7 +211,7 @@ def person(username):
             return redirect(url_for('login'))
 
         else:
-            if request.form['whichform'] == 'documentupload':
+            if request.form['action'] == 'documentupload':
                 file = request.files['file']
                 filename = secure_filename(file.filename)
                 path = os.path.join(app.config['DOCUMENTS_LOCATION'], 'pending', username)
