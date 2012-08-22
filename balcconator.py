@@ -205,13 +205,12 @@ def people():
 @app.route('/people/<username>/', methods=['POST', 'GET'])
 def person(username):
     if request.method == 'POST':
-        # allow POST only if the correct user is logged in
-        if not username == session.get('username', None):
-            flash('The access to that page is restricted. You need to be logged in as a user with proper permissions.', 'error')
-            return redirect(url_for('login'))
+        if request.form['action'] == 'documentupload':
+            if not username == session.get('username', None):
+                flash('The access to that page is restricted. You need to be logged in as a user with proper permissions.', 'error')
+                return redirect(url_for('login'))
 
-        else:
-            if request.form['action'] == 'documentupload':
+            else:
                 file = request.files['file']
                 filename = secure_filename(file.filename)
                 path = safe_join(app.config['DOCUMENTS_LOCATION'], '/pending', username)
@@ -219,6 +218,28 @@ def person(username):
                     os.makedirs(path)
                 file.save(safe_join(path, filename))
                 flash('Document uploaded. Now it needs to be approved by a reviewer.')
+
+        elif request.form['action'] == 'publish':
+            if not g.permission_reviewer:
+                flash('The access to that page is restricted. You need to be logged in as a user with proper permissions.', 'error')
+                return redirect(url_for('login'))
+
+            else:
+                username = request.form['username']
+                filename = secure_filename(request.form['document'])
+                src_path = safe_join(app.config['DOCUMENTS_LOCATION'] + '/pending', username)
+                src = safe_join(src_path, filename)
+                dst_path = safe_join(app.config['DOCUMENTS_LOCATION'] + '/public', username)
+                dst = safe_join(dst_path, filename)
+                if not os.path.exists(dst_path):
+                    os.makedirs(dst_path)
+
+                if not os.path.exists(src):
+                    flash('Document not found. Is it hiding in a closet, or are you meesing with the system?', error)
+
+                else:
+                    os.rename(src, dst)
+                    flash('Document published.')
 
     try:
         g.documents_public = os.listdir(safe_join(app.config['DOCUMENTS_LOCATION'] + '/public', username))

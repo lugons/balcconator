@@ -23,11 +23,20 @@
     {% if session.username == g.person.username or g.permission_reviewer %}
     {% if g.documents_pending %}
     Documents pending review
+    {% for document in g.documents_pending %}
     <ul>
-        {% for document in g.documents_pending %}
-        <li><a href="{{ url_for('document_pending', username=g.person.username, filename=document) }}">{{ document }}</a></li>
-        {% endfor %}
+        <li><a href="{{ url_for('document_pending', username=g.person.username, filename=document) }}">{{ document }}</a>
+            {% if g.permission_reviewer %}
+            <form class="inline" method="post">
+                <input type="hidden" name="action" value="publish"/>
+                <input type="hidden" name="username" value="{{ g.person.username }}"/>
+                <input type="hidden" name="document" value="{{ document }}"/>
+                <input type="submit" value="publish"/>
+            </form>
+            {% endif %}
+        </li>
     </ul>
+    {% endfor %}
     {% endif %}
     {% endif %}
 
