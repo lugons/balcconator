@@ -4,7 +4,7 @@
 import config, os
 
 from werkzeug.utils import secure_filename
-from flask import Flask, render_template, make_response, request, g, session, flash, redirect, url_for, abort, send_from_directory
+from flask import Flask, render_template, make_response, request, g, session, flash, redirect, url_for, abort, send_from_directory, safe_join
 app = Flask(__name__)
 
 #from sqlalchemy.dialects import postgresql
@@ -214,19 +214,19 @@ def person(username):
             if request.form['action'] == 'documentupload':
                 file = request.files['file']
                 filename = secure_filename(file.filename)
-                path = os.path.join(app.config['DOCUMENTS_LOCATION'], 'pending', username)
+                path = safe_join(app.config['DOCUMENTS_LOCATION'], '/pending', username)
                 if not os.path.exists(path):
                     os.makedirs(path)
-                file.save(os.path.join(path, filename))
+                file.save(safe_join(path, filename))
                 flash('Document uploaded. Now it needs to be approved by a reviewer.')
 
     try:
-        g.documents_public = os.listdir(os.path.join(app.config['DOCUMENTS_LOCATION'], 'public', username))
+        g.documents_public = os.listdir(safe_join(app.config['DOCUMENTS_LOCATION'] + '/public', username))
     except:
         g.documents_public = []
 
     try:
-        g.documents_pending = os.listdir(os.path.join(app.config['DOCUMENTS_LOCATION'], 'pending', username))
+        g.documents_pending = os.listdir(safe_join(app.config['DOCUMENTS_LOCATION'] + '/pending', username))
     except:
         g.documents_pending = []
 
@@ -236,14 +236,14 @@ def person(username):
 
 @app.route('/people/<username>/<filename>')
 def document_public(username, filename):
-    path = os.path.join(app.config['DOCUMENTS_LOCATION'], 'public', username)
+    path = safe_join(app.config['DOCUMENTS_LOCATION'] + '/public', username)
     return send_from_directory(path, filename)
 
 
 @app.route('/people/<username>/pending/<filename>')
 def document_pending(username, filename):
     if username == session.get('username', None) or g.permission_reviewer:
-        path = os.path.join(app.config['DOCUMENTS_LOCATION'], 'pending', username)
+        path = safe_join(app.config['DOCUMENTS_LOCATION'] + '/pending', username)
         return send_from_directory(path, filename)
 
     abort(401)
