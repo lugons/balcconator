@@ -79,6 +79,7 @@
         <a{% if active_page == 'admin' %} class="active"{% endif %} href="{{ url_for('admin') }}">Main</a>
         <a{% if active_page == 'admin' %} class="active"{% endif %} href="{{ url_for('admin_people') }}">People</a>
         <a{% if active_page == 'admin' %} class="active"{% endif %} href="{{ url_for('admin_groups') }}">Groups</a>
+        <a{% if active_page == 'admin' %} class="active"{% endif %} href="{{ url_for('admin_review') }}">Document Review</a>
         {% endif %}
         {% if session.username %}<div style="float: right">logged in as: <a href="{{ url_for('person', username=session.username) }}">{{ session.username }}</a></div>{% endif %}
     </div>

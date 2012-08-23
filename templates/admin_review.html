@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% set active_page = "admin_review" %}
+{% set title = "Document Review" %}
+{% block contents %}
+    <table>
+        <tr><th>username/document</th><th>action</th></tr>
+        {% for username, document in g.documents %}
+        <tr>
+            <td><a href="{{ url_for('document_pending', username=username, filename=document) }}">{{ username }}/{{ document }}</a></td>
+            <td>
+                <form class="inline" method="post">
+                    <input type="hidden" name="action" value="publish"/>
+                    <input type="hidden" name="username" value="{{ username }}"/>
+                    <input type="hidden" name="document" value="{{ document }}"/>
+                    <input type="submit" value="publish"/>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -574,6 +574,38 @@ def admin_people():
     return render_template('admin_people.html')
 
 
+@app.route('/admin/review', methods=['POST', 'GET'])
+def admin_review():
+    if not g.permission_reviewer:
+        abort(401)
+
+    if request.method == 'POST':
+        username = request.form['username']
+        filename = secure_filename(request.form['document'])
+        src_path = safe_join(safe_join(app.config['DOCUMENTS_LOCATION'], 'pending'), username)
+        src = safe_join(src_path, filename)
+        dst_path = safe_join(safe_join(app.config['DOCUMENTS_LOCATION'], 'public'), username)
+        dst = safe_join(dst_path, filename)
+        if not os.path.exists(dst_path):
+            os.makedirs(dst_path)
+
+        if not os.path.exists(src):
+            flash('Document not found. Is it hiding in a closet, or are you meesing with the system?', error)
+
+        else:
+            os.rename(src, dst)
+            flash('Document published.')
+
+    g.documents = []
+    users = os.listdir(safe_join(app.config['DOCUMENTS_LOCATION'], 'pending'))
+    for user in users:
+        user_documents = os.listdir(safe_join(safe_join(app.config['DOCUMENTS_LOCATION'], 'pending'), user))
+        for user_document in user_documents:
+            g.documents.append((user, user_document))
+
+    return render_template('admin_review.html')
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
