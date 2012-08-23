@@ -214,7 +214,7 @@ def person(username):
             else:
                 file = request.files['file']
                 filename = secure_filename(file.filename)
-                path = safe_join(app.config['DOCUMENTS_LOCATION'], '/pending', username)
+                path = safe_join(safe_join(app.config['DOCUMENTS_LOCATION'], 'pending'), username)
                 if not os.path.exists(path):
                     os.makedirs(path)
                 file.save(safe_join(path, filename))
@@ -228,9 +228,9 @@ def person(username):
             else:
                 username = request.form['username']
                 filename = secure_filename(request.form['document'])
-                src_path = safe_join(app.config['DOCUMENTS_LOCATION'] + '/pending', username)
+                src_path = safe_join(safe_join(app.config['DOCUMENTS_LOCATION'], 'pending'), username)
                 src = safe_join(src_path, filename)
-                dst_path = safe_join(app.config['DOCUMENTS_LOCATION'] + '/public', username)
+                dst_path = safe_join(safe_join(app.config['DOCUMENTS_LOCATION'], 'public'), username)
                 dst = safe_join(dst_path, filename)
                 if not os.path.exists(dst_path):
                     os.makedirs(dst_path)
@@ -243,12 +243,12 @@ def person(username):
                     flash('Document published.')
 
     try:
-        g.documents_public = os.listdir(safe_join(app.config['DOCUMENTS_LOCATION'] + '/public', username))
+        g.documents_public = os.listdir(safe_join(safe_join(app.config['DOCUMENTS_LOCATION'], 'public'), username))
     except:
         g.documents_public = []
 
     try:
-        g.documents_pending = os.listdir(safe_join(app.config['DOCUMENTS_LOCATION'] + '/pending', username))
+        g.documents_pending = os.listdir(safe_join(safe_join(app.config['DOCUMENTS_LOCATION'], 'pending'), username))
     except:
         g.documents_pending = []
 
@@ -258,14 +258,14 @@ def person(username):
 
 @app.route('/people/<username>/<filename>')
 def document_public(username, filename):
-    path = safe_join(app.config['DOCUMENTS_LOCATION'] + '/public', username)
+    path = safe_join(safe_join(app.config['DOCUMENTS_LOCATION'], 'public'), username)
     return send_from_directory(path, filename)
 
 
 @app.route('/people/<username>/pending/<filename>')
 def document_pending(username, filename):
     if username == session.get('username', None) or g.permission_reviewer:
-        path = safe_join(app.config['DOCUMENTS_LOCATION'] + '/pending', username)
+        path = safe_join(safe_join(app.config['DOCUMENTS_LOCATION'], 'pending'), username)
         return send_from_directory(path, filename)
 
     abort(401)
