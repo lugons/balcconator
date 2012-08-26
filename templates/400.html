@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% set active_page = "page_not_found" %}
+{% set title = "Bad Request" %}
+{% block contents %}
+    Your page request is either missing some data or is otherwise malformed. This includes a missing <a href="http://en.wikipedia.org/wiki/Csrf">CSRF</a> token.
+{% endblock %}

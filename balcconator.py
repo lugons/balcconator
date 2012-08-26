@@ -616,6 +616,11 @@ def unauthorized(e):
     return render_template('401.html'), 401
 
 
+@app.errorhandler(400)
+def unauthorized(e):
+    return render_template('400.html'), 400
+
+
 @app.route('/textile2html', methods=['POST', 'GET'])
 def textile2html():
     if request.method == 'POST':
