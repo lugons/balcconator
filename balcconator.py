@@ -168,6 +168,16 @@ def admin_required(f):
 
 
 @app.before_request
+def check_csrf():
+    if not session.get('csrf'):
+        session['csrf'] = sha1(os.urandom(400)).hexdigest()
+    
+    if request.method == 'POST':
+        if not request.form['csrf'] == session.get('csrf'):
+            abort(400)
+
+
+@app.before_request
 def fetch_permissions():
     username = session.get('username', None)
     if not username:
