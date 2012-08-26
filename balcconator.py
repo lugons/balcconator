@@ -437,7 +437,7 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session.pop('username', None)
+    session.clear()
     flash('Logged out. Thank you for your visit.')
     return redirect(request.referrer or url_for('index'))
 
