@@ -28,6 +28,7 @@
         <li><a href="{{ url_for('document_pending', username=g.person.username, filename=document) }}">{{ document }}</a>
             {% if g.permission_reviewer %}
             <form class="inline" method="post">
+                <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
                 <input type="hidden" name="action" value="publish"/>
                 <input type="hidden" name="username" value="{{ g.person.username }}"/>
                 <input type="hidden" name="document" value="{{ document }}"/>
@@ -42,6 +43,7 @@
 
     {% if session.username == g.person.username %}
     <form name="documentupload" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
         <fieldset>
             <legend>Upload a document</legend>
             <p>Filename will be made <i>web safe</i>. This includes, but is not limited to: underscores being placed instead of spaces, slashes and hashmarks being removed. Thank you for understanding.</p>

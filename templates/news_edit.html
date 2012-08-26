@@ -3,6 +3,7 @@
 {% set title = "Edit News" %}
 {% block contents %}
     <form method="post">
+        <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
         Title:<input name="title" size="80" maxlength="80" value="{{ g.news_item.title }}"/><br/>
         <textarea name="text" class="textile" cols="80" rows="20">{{ g.news_item.text }}</textarea>
         <input type="submit"/>

@@ -3,12 +3,13 @@
 {% set title = "Register" %}
 {% block contents %}
     <form action="" method="post">
-    <p>Username: <input type="text" name="username"></p>
-    <p>Password: <input type="password" name="password"></p>
-    <p>Confirm password: <input type="password" name="confirm_password"></p>
-    <p>E-mail address: <input type="email" name="email"></p>
-    <!-- captcha -->
-    <p><input type="submit" value="Register"></p>
+        <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
+        <p>Username: <input type="text" name="username"></p>
+        <p>Password: <input type="password" name="password"></p>
+        <p>Confirm password: <input type="password" name="confirm_password"></p>
+        <p>E-mail address: <input type="email" name="email"></p>
+        <!-- captcha -->
+        <p><input type="submit" value="Register"></p>
     </form>
     <p>If you have already finished this step and need to confirm your registration, click <a href="{{ url_for('register_confirm') }}">here</a>.</p>
 {% endblock %}

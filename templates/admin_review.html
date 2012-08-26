@@ -9,6 +9,7 @@
             <td><a href="{{ url_for('document_pending', username=username, filename=document) }}">{{ username }}/{{ document }}</a></td>
             <td>
                 <form class="inline" method="post">
+                    <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
                     <input type="hidden" name="action" value="publish"/>
                     <input type="hidden" name="username" value="{{ username }}"/>
                     <input type="hidden" name="document" value="{{ document }}"/>

@@ -18,6 +18,7 @@
         {%- for person in g.people %}
         <tr>
         <form method="post">
+            <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
             <td>{{ person.username }}</td>
             <td><!-- password --></td>
             <td>{{ person.firstname }}</td>
@@ -36,6 +37,7 @@
         {%- endfor %}
         <tr>
         <form method="post">
+            <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
             <td><input type="text" name="username"/></td>
             <td><input type="password" name="password"/></td>
             <td><input type="text" name="firstname"/></td>
@@ -54,6 +56,5 @@
             <td><input type="submit" name="action" value="add"/></td>
         </form>
         </tr>
-
     </table>
 {% endblock %}

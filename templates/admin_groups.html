@@ -7,6 +7,7 @@
         {%- for group in g.groups %}
         <tr>
         <form method="post">
+            <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
             <td>{{ group.groupname }}</td><td>{{ group.displayname }}</td><td>{{ group.email }}</td><td>{{ group.registration_date }}</td>
             <td>{{ group.members|join(', ', attribute='username')}}</td>
             <td>
@@ -18,6 +19,7 @@
         {%- endfor %}
         <tr>
         <form method="post">
+            <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
             <td><input type="text" name="groupname"/></td>
             <td><input type="text" name="displayname"/></td>
             <td><input type="email" name="email"/></td>
