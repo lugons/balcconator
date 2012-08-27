@@ -230,6 +230,60 @@ def person(username):
                 file.save(safe_join(path, filename))
                 flash('Document uploaded. Now it needs to be approved by a reviewer.')
 
+        elif request.form['action'] == 'editpersonaldetails':
+            if not username == session.get('username', None):
+                flash('The access to that page is restricted. You need to be logged in as a user with proper permissions.', 'error')
+                return redirect(url_for('login'))
+
+            else:
+                person = Person.query.filter_by(username=username).first()
+                person.firstname = request.form['firstname']
+                person.lastname = request.form['lastname']
+                person.displayname = request.form['displayname']
+                person.gender = request.form['gender']
+
+                try:
+                    db.session.add(person)
+                    db.session.commit()
+                    flash('Personal data updated.')
+
+                except IntegrityError as err:
+                    flash(err.message, 'error')
+                    db.session.rollback()
+
+                except SQLAlchemyError:
+                    db.session.rollback()
+                    flash('Something went wrong.')
+
+        elif request.form['action'] == 'changepassword':
+            if not username == session.get('username', None):
+                flash('The access to that page is restricted. You need to be logged in as a user with proper permissions.', 'error')
+                return redirect(url_for('login'))
+
+            else:
+                if request.form['new_password'] != request.form['confirm_new_password']:
+                    flash('Repeated password is not the same as the new password. Please try again.', 'error')
+
+                else:
+                    person = Person.query.filter_by(username=username, password=sha1(request.form['old_password']).hexdigest()).first()
+                    if person is None:
+                        flash('Current password does not match. Please try again.', 'error')
+
+                    else:
+                        person.password = sha1(request.form['new_password']).hexdigest()
+                        try:
+                            db.session.add(person)
+                            db.session.commit()
+                            flash('Password updated.')
+
+                        except IntegrityError as err:
+                            flash(err.message, 'error')
+                            db.session.rollback()
+
+                        except SQLAlchemyError:
+                            db.session.rollback()
+                            flash('Something went wrong.')
+
         elif request.form['action'] == 'publish':
             if not g.permission_reviewer:
                 flash('The access to that page is restricted. You need to be logged in as a user with proper permissions.', 'error')

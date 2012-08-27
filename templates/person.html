@@ -47,13 +47,53 @@
         <fieldset>
             <legend>Upload a document</legend>
             <p>Filename will be made <i>web safe</i>. This includes, but is not limited to: underscores being placed instead of spaces, slashes and hashmarks being removed. Thank you for understanding.</p>
-            <input type="hidden" name="action" value="documentupload"/>
-            <div><input type="file" name="file"/></div>
-            <div>
+            <p><input type="file" name="file"/></p>
+            <p>
+                <input type="hidden" name="action" value="documentupload"/>
                 <input type="submit"/>
                 <input type="reset"/>
-            </div>
+            </p>
         </fieldset>
     </form>
+    <br/>
+    <form name="editpersonaldetails" method="post">
+        <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
+        <fieldset>
+            <legend>Edit personal details</legend>
+            <p>Username: {{ g.person.username }}</p>
+            <p>First name: <input type="text" name="firstname" value="{{ g.person.firstname }}"/></p>
+            <p>Last name: <input type="text" name="lastname" value="{{ g.person.lastname }}"/></p>
+            <p>Display name: <input type="text" name="displayname" value="{{ g.person.displayname }}"/></p>
+            <p>Gender:
+                <select name="gender">
+                    <option value="male"{% if g.person.gender == 'male' %} selected="selected"{% endif %}>Male</option>
+                    <option value="female"{% if g.person.gender == 'female' %} selected="selected"{% endif %}>Female</option>
+                    <option value="unspecified"{% if g.person.gender == 'unspecified' %} selected="selected"{% endif %}>Unspecified</option>
+                </select>
+            </p>
+            <p>E-mail: {{ g.person.email }}</p>
+            <p>
+                <input type="hidden" name="action" value="editpersonaldetails"/>
+                <input type="submit"/>
+                <input type="reset"/>
+            </p>
+        </fieldset>
+    </form>
+    <br/>
+    <form name="changepassword" method="post">
+        <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
+        <fieldset>
+            <legend>Change password</legend>
+            <p>Current password: <input type="password" name="old_password"></p>
+            <p>New password: <input type="password" name="new_password"></p>
+            <p>Repeat new password: <input type="password" name="confirm_new_password"></p>
+            <p>
+                <input type="hidden" name="action" value="changepassword"/>
+                <input type="submit"/>
+                <input type="reset"/>
+            </p>
+        </fieldset>
+    </form>
+
     {% endif %}
 {% endblock %}
