@@ -171,7 +171,7 @@ def admin_required(f):
 def check_csrf():
     if not session.get('csrf'):
         session['csrf'] = sha1(os.urandom(400)).hexdigest()
-    
+
     if request.method == 'POST':
         if not request.form['csrf'] == session.get('csrf'):
             abort(400)
