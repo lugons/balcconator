@@ -554,7 +554,6 @@ def register_confirm():
     if code and username:
         try:
             person = Person.query.filter_by(username=username, confirmation_code=code).first()
-            print 'person:', person
             person.confirmation_code=None
             db.session.add(person)
             db.session.commit()
@@ -696,7 +695,6 @@ def qr(path):
 
     recoloured = []
     for pixel in image.getdata():
-        print pixel
         if pixel == (255, 255, 255):
             pixel = (0, 192, 0)
         recoloured.append(pixel)
