@@ -1,0 +1,30 @@
+# -*- coding: utf-8 -*-
+
+# example configuration file, for more info see
+# http://flask.pocoo.org/docs/config/
+
+# do NOT set this to True in production, as it exposes a Python shell
+DEBUG = False
+
+# where to log requests and other info
+LOG_FILE = '/home/balcconator/balcconator.log'
+
+# used for session management and cookies, generate with os.urandom(24) or something similar
+SECRET_KEY = ''
+
+# database connection string, general form is engine://username:password@server:port/database
+# see http://docs.sqlalchemy.org/en/latest/core/engines.html for more info
+SQLALCHEMY_DATABASE_URI = 'sqlite:///balcconator.db'
+
+# echo every SQL query (this creates A LOT of output)
+SQLALCHEMY_ECHO = False
+
+# reCAPTCHA keys, get them at http://www.google.com/recaptcha
+RECAPTCHA_PUBLIC_KEY = ''
+RECAPTCHA_PRIVATE_KEY = ''
+
+# when users register, they get an e-mail from this address
+DEFAULT_MAIL_SENDER = ("BalCCon administration team", "root@localhost")
+
+# documents uploaded by users and published after review
+DOCUMENTS_LOCATION = '/home/balcconator/documents'
