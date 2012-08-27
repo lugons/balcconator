@@ -18,6 +18,7 @@ mail = Mail(app)
 from functools import wraps
 from datetime import datetime
 from hashlib import sha1
+import qrencode, StringIO
 #from recaptcha.client import captcha
 
 from textile import textile
@@ -683,6 +684,33 @@ def unauthorized(e):
 @app.errorhandler(400)
 def unauthorized(e):
     return render_template('400.html'), 400
+
+
+@app.route('/qr', defaults={'path': ''})
+@app.route('/<path:path>/qr')
+def qr(path):
+    text = request.url[:-3]
+
+    image = qrencode.encode_scaled(text, 120)[2]
+    image = image.convert('RGB')
+
+    recoloured = []
+    for pixel in image.getdata():
+        print pixel
+        if pixel == (255, 255, 255):
+            pixel = (0, 192, 0)
+        recoloured.append(pixel)
+    image.putdata(recoloured)
+
+    output = StringIO.StringIO()
+    format = 'PNG'
+    image.save(output, format)
+    contents = output.getvalue()
+    output.close()
+
+    response = make_response(contents)
+    response.headers['Content-Type'] = 'image/png'
+    return response
 
 
 @app.route('/textile2html', methods=['POST', 'GET'])

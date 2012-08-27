@@ -99,6 +99,7 @@
             <li><a href="{{ url_for('about') }}">About BalCCon</a></li>
             <li><a href="{{ url_for('friends') }}">LUGoNS and Friends</a></li>
         </ul>
+        <img src="{{ request.url + '/qr' }}" alt="qr"/>
     </td>
     <td id="main-center">
     {%- with messages = get_flashed_messages(with_categories=true) %}
