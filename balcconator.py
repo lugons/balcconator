@@ -321,6 +321,15 @@ def person(username):
     return render_template('person.html')
 
 
+@app.route('/people/<username>/vcard')
+def vcard(username):
+    g.person = Person.query.filter_by(username=username).first()
+    response = make_response(render_template('vcard.vcf'))
+    response.headers['Content-Type'] = 'text/vcard'
+    response.headers['Content-Disposition'] = 'attachment;filename="' + username + '.vcf"'
+    return response
+
+
 @app.route('/people/<username>/<filename>')
 def document_public(username, filename):
     path = safe_join(safe_join(app.config['DOCUMENTS_LOCATION'], 'public'), username)

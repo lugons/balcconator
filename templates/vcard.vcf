@@ -1,0 +1,7 @@
+BEGIN:VCARD
+VERSION:3.0
+N:{{ g.person.lastname }};{{ g.person.firstname }}
+FN:{{ g.person.displayname }}
+NICKNAME:{{ g.person.username }}
+EMAIL:{{ g.person.email }}
+END:VCARD
