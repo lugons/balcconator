@@ -2,6 +2,17 @@
 {% set active_page = "news_add" %}
 {% set title = "Edit News" %}
 {% block contents %}
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='markitup/jquery.markitup.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='markitup/sets/textile/set.js') }}"></script>
+
+    <script language="javascript">
+        mySettings.previewParserPath = '{{ url_for('textile2html') }}';
+        $(document).ready(function() {
+            $('.textile').markItUp(mySettings);
+        });
+    </script>
+
     <form method="post">
         <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
         Title:<input name="title" size="80" maxlength="80" value="{{ g.news_item.title }}"/><br/>

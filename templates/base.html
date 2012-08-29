@@ -7,17 +7,6 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='markitup/sets/textile/style.css') }}"/>
     <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Glegoo'/>
 
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='markitup/jquery.markitup.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='markitup/sets/textile/set.js') }}"></script>
-
-    <script language="javascript">
-        mySettings.previewParserPath = '{{ url_for('textile2html') }}';
-        $(document).ready(function() {
-            $('.textile').markItUp(mySettings);
-        });
-    </script>
-
     <title>BalCCon 2013 - {{ title }}</title>
 </head>
 <body>
