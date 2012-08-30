@@ -5,7 +5,7 @@
     {% for venue in g.venues %}
     <div class="venue">
         <h3 id="{{ venue.id }}"><a href="{{ url_for('venue_individual', venue_id = venue.id) }}">{{ venue.title }}</a></h3>
-        <div>{{ venue.text }}</div>
+        <div>{{ venue.description }}</div>
         <div>Address: {{ venue.address }}</div>
         <div>Events at this venue:
             <ul>

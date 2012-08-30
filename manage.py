@@ -39,7 +39,7 @@ def initdb():
 
     db.session.commit()
 
-    # id, title, text, address
+    # title, description, address
     sala1 = Venue('Sala 1', 'Velika sala na 1. spratu', 'Ulica i broj')
     sala2 = Venue('Sala 2', 'Mala sala na 2. spratu', 'Ulica i broj')
     restoran = Venue('Restoran', 'Restoran u hotelu', u'Sunčani kej bb')
