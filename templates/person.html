@@ -4,7 +4,20 @@
 {% block contents %}
     Hello, I am {{ g.person.displayname }}. You can contact me at <a href="mailto:{{ g.person.email }}">{{ g.person.email }}</a>.<br/>
 
-    Groups this person is a member of:
+    <h3>Events this person is organizing</h3>
+    <ul>
+        {% for event in g.person.events %}
+        <li>
+            <h4>{{ event.title }}</h4>
+            <p><b>start:</b> {{ event.start }}</br>
+            <b>end:</b> {{ event.end }}</br>
+            <b>location:</b> {{ event.venue.title }}</p>
+            <p>{{ event.text }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h3>Groups this person is a member of</h3>
     <ul>
         {% for group in g.person.groups %}
         <li><a href="{{ url_for('group', groupname=group.groupname) }}">{{ group.displayname }}</a></li>
@@ -12,7 +25,7 @@
     </ul>
 
     {% if g.documents_public %}
-    Public documents
+    <h3>Public documents</h3>
     <ul>
         {% for document in g.documents_public %}
         <li><a href="{{ url_for('document_public', username=g.person.username, filename=document) }}">{{ document }}</a></li>
@@ -22,7 +35,7 @@
 
     {% if session.username == g.person.username or g.permission_reviewer %}
     {% if g.documents_pending %}
-    Documents pending review
+    <h3>Documents pending review</h3>
     {% for document in g.documents_pending %}
     <ul>
         <li><a href="{{ url_for('document_pending', username=g.person.username, filename=document) }}">{{ document }}</a>
