@@ -463,16 +463,16 @@ def news_add():
 def schedule():
     if request.method == 'POST':
         if request.form['action'] == 'add':
-            event = Event(
-                request.form['person'],
-                request.form['title'],
-                '', # description text, to be filled from a separate page
-                datetime.strptime(request.form['start'], '%Y-%m-%d %H:%M:%S'),
-                datetime.strptime(request.form['end'], '%Y-%m-%d %H:%M:%S'),
-                request.form['venue'],
-            )
-
             try:
+                event = Event(
+                    request.form['person'],
+                    request.form['title'],
+                    '', # description text, to be filled from a separate page
+                    datetime.strptime(request.form['start'], '%Y-%m-%d %H:%M:%S'),
+                    datetime.strptime(request.form['end'], '%Y-%m-%d %H:%M:%S'),
+                    request.form['venue'],
+                )
+
                 db.session.add(event)
                 db.session.commit()
                 flash('Event added.')
@@ -484,6 +484,9 @@ def schedule():
             except SQLAlchemyError:
                 db.session.rollback()
                 flash('Something went wrong.')
+
+            except ValueError:
+                flash('Invalid date/time format')
 
         elif request.form['action'] == 'delete':
             event = Event.query.filter_by(id=request.form['event_id']).first()
