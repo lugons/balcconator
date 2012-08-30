@@ -467,7 +467,7 @@ def about():
     return render_template('about.html')
 
 
-@app.route('/venue')
+@app.route('/venue/')
 def venue():
     g.venues = Venue.query.all()
     return render_template('venue.html')
