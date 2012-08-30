@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% set active_page = "todo" %}
+{% set title = "TODO" %}
+{% block contents %}
+    <div class="venue">
+        <h3 id="{{ g.venue.id }}"><a href="{{ url_for('venue_individual', venue_id = g.venue.id) }}">{{ g.venue.title }}</a></h3>
+        <p>{{ g.venue.description }}</p>
+        <p>Address: {{ g.venue.address }}</p>
+        <p>Events at this venue:
+            <ul>
+            {% for event in g.venue.events %}
+            <li>{{ event.title }}</li>
+            {% endfor %}
+            </ul>
+            {% if g.permission_venue %}
+            <a href="{{ url_for('venue_edit', venue_id = g.venue.id) }}">Edit</a>
+            {% endif %}
+        </p>
+    </div>
+{% endblock %}
