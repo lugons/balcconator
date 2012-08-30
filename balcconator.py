@@ -43,8 +43,8 @@ class Person(db.Model):
     email = db.Column(db.String(120))
     registration_date = db.Column(db.DateTime)
     confirmation_code = db.Column(db.String(40), nullable=True)
-    groups = db.relationship('Group', secondary=groupmembers, backref=db.backref('groups', lazy='dynamic'))
-    events = db.relationship('Event', backref='events', lazy='dynamic')
+    groups = db.relationship('Group', secondary=groupmembers)
+    events = db.relationship('Event')
 
     permission_news = db.Column(db.Boolean)
     permission_reviewer = db.Column(db.Boolean)
@@ -79,7 +79,7 @@ class Group(db.Model):
     displayname = db.Column(db.String(80))
     email = db.Column(db.String(120), unique=True)
     registration_date = db.Column(db.DateTime)
-    members = db.relationship('Person', secondary=groupmembers, backref=db.backref('members', lazy='dynamic'))
+    members = db.relationship('Person', secondary=groupmembers)
 
     def __init__(self, groupname, displayname, email):
         self.groupname = groupname
@@ -99,7 +99,7 @@ class News(db.Model):
 
     def __init__(self, title, text):
         self.title = title
-        self.text = text # CLOB
+        self.text = text
         self.date = datetime.utcnow()
 
     def __repr__(self):
@@ -108,20 +108,22 @@ class News(db.Model):
 
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    person = db.Column(db.String(40), db.ForeignKey('person.username'))
+    person_username = db.Column(db.String(40), db.ForeignKey('person.username'))
+    person = db.relationship('Person')
     title = db.Column(db.String(80))
     text = db.Column(db.Text)
     start = db.Column(db.DateTime)
     end = db.Column(db.DateTime)
-    venue = db.Column(db.Integer, db.ForeignKey('venue.id'))
+    venue_id = db.Column(db.Integer, db.ForeignKey('venue.id'))
+    venue = db.relationship('Venue')
 
-    def __init__(self, person, title, text, start, end, venue):
-        self.person = person
+    def __init__(self, person_username, title, text, start, end, venue_id):
+        self.person_username = person_username
         self.title = title
         self.text = text
         self.start = start
         self.end = end
-        self.venue = venue
+        self.venue_id = venue_id
 
     def __repr__(self):
         return '<Event %r>' % self.id
@@ -132,7 +134,7 @@ class Venue(db.Model):
     title = db.Column(db.String(80))
     description = db.Column(db.Text)
     address = db.Column(db.Text)
-    events = db.relationship('Event', backref='venue_events', lazy='dynamic')
+    events = db.relationship('Event')
 
     def __init__(self, title, description, address):
         self.title = title
