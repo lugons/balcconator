@@ -22,6 +22,7 @@
         <td>
             <form method="post">
                 <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
+                <input type="hidden" name="event_id" value="{{ event.id }}"/>
                 <input type="submit" name="action" value="delete"/>
                 <input type="submit" name="action" value="reschedule"/>
             </form>

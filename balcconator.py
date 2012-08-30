@@ -483,6 +483,22 @@ def schedule():
                 db.session.rollback()
                 flash('Something went wrong.')
 
+        elif request.form['action'] == 'delete':
+            event = Event.query.filter_by(id=request.form['event_id']).first()
+            try:
+                db.session.delete(event)
+                db.session.commit()
+                flash('Event deleted.')
+
+            except IntegrityError as err:
+                flash(err.message, 'error')
+                db.session.rollback()
+
+            except SQLAlchemyError:
+                db.session.rollback()
+                flash('Something went wrong.')
+            
+
     g.events = Event.query.order_by(Event.start.asc()).all()
     g.venues = Venue.query.order_by(Venue.title.asc()).all()
     g.people = Person.query.all()
