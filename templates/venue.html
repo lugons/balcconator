@@ -15,6 +15,10 @@
             </ul>
             {% if g.permission_venue %}
             <a href="{{ url_for('venue_edit', venue_id = venue.id) }}">Edit</a>
+            <form class="inline" method="post" action="{{ url_for('venue_delete', venue_id = venue.id) }}">
+                <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
+                <input type="submit" value="Delete"/>
+            </form>
             {% endif %}
         </div>
     </div>

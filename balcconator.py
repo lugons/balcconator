@@ -509,6 +509,29 @@ def venue_edit(venue_id):
     return render_template('venue_edit.html')
 
 
+@app.route('/venue/<int:venue_id>/delete', methods=['POST', 'GET'])
+def venue_delete(venue_id):
+    if not g.permission_venue:
+        abort(401)
+
+    venue_individual = Venue.query.filter_by(id=venue_id).first()
+    if request.method == 'POST':
+        try:
+            db.session.delete(venue_individual)
+            db.session.commit()
+            flash('Venue deleted.')
+
+        except IntegrityError as err:
+            flash(err.message, 'error')
+            db.session.rollback()
+
+        except SQLAlchemyError:
+            db.session.rollback()
+            flash('Something went wrong.')
+
+    return redirect(url_for('venue'))
+
+
 @app.route('/venue/add', methods=['POST', 'GET'])
 def venue_add():
     if not g.permission_venue:
