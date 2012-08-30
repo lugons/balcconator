@@ -499,7 +499,6 @@ def schedule():
             except SQLAlchemyError:
                 db.session.rollback()
                 flash('Something went wrong.')
-            
 
     g.events = Event.query.order_by(Event.start.asc()).all()
     g.venues = Venue.query.order_by(Venue.title.asc()).all()
