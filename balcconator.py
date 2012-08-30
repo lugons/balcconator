@@ -473,6 +473,28 @@ def venue():
     return render_template('venue.html')
 
 
+@app.route('/venue/<int:venue_id>')
+def venue_individual(venue_id):
+    g.venue = Venue.query.filter_by(id=venue_id).first()
+    return render_template('venue_individual.html')
+
+
+@app.route('/venue/<int:venue_id>/edit', methods=['POST', 'GET'])
+def venue_edit(venue_id):
+    if not g.permission_venue:
+        abort(401)
+
+    return render_template('venue_edit.html')
+
+
+@app.route('/venue/add', methods=['POST', 'GET'])
+def venue_add():
+    if not g.permission_venue:
+        abort(401)
+
+    return render_template('venue_add.html')
+
+
 @app.route('/friends')
 def friends():
     return render_template('friends.html')
