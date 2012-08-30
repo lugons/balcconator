@@ -23,7 +23,7 @@ def initdb():
     db.session.add(lecturers)
 
     # username, password, email, firstname, lastname, displayname, gender
-    admin = Person('admin', 'adm1n', 'admin@localhost', '', '', 'Administrator', 'unspecified')
+    admin = Person('admin', 'adm1n', 'admin@localhost', '', '', 'Administrator', 'unspecified', permission_news=True, permission_reviewer=True, permission_venue=True)
     john = Person('john', 'john', 'john@localhost', 'John', 'Doe', 'John Doe', 'male')
     jane = Person('jane', 'jane', 'jane@localhost', 'Jane', 'Doe', 'Jane Doe', 'female')
     reviewer = Person('reviewer', 'reviewer', 'reviewer@localhost', '', '', 'Reviewer', 'unspecified', permission_reviewer=True)
@@ -40,9 +40,9 @@ def initdb():
     db.session.commit()
 
     # id, title, text, address
-    sala1 = Venue('sala1', 'Sala 1', 'Velika sala na 1. spratu', 'Ulica i broj')
-    sala2 = Venue('sala2', 'Sala 2', 'Mala sala na 2. spratu', 'Ulica i broj')
-    restoran = Venue('restoran', 'Restoran', 'Restoran u hotelu', u'Sunčani kej bb')
+    sala1 = Venue('Sala 1', 'Velika sala na 1. spratu', 'Ulica i broj')
+    sala2 = Venue('Sala 2', 'Mala sala na 2. spratu', 'Ulica i broj')
+    restoran = Venue('Restoran', 'Restoran u hotelu', u'Sunčani kej bb')
     db.session.add(sala1)
     db.session.add(sala2)
     db.session.add(restoran)
