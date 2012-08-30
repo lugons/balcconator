@@ -169,6 +169,10 @@ form.action {
     display: inline;
 }
 
+.overlapping {
+    background-color: #330;
+}
+
 label {
     display: inline-block;
     width: 100px;

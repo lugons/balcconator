@@ -12,7 +12,7 @@
     <table>
     <tr><th>who</th><th>what</th><th>when</th><th>where</th>{% if g.permission_schedule %}<th>action</th>{% endif %}</tr>
     {%- for event in g.events %}
-    <tr>
+    <tr{% if event in g.overlapping %} class="overlapping"{% endif %}>
         <td><a href="{{ url_for('person', username=event.person_username) }}">{{ event.person.displayname }}</a></td>
         <td>{{ event.title }}</td>
         <!-- <td>{{ event.text }}</td> -->

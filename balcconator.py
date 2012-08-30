@@ -506,6 +506,17 @@ def schedule():
     g.events = Event.query.order_by(Event.start.asc()).all()
     g.venues = Venue.query.order_by(Venue.title.asc()).all()
     g.people = Person.query.all()
+    g.overlapping = []
+    if g.permission_schedule:
+        for i in range(len(g.events) -1):
+            for j in range(i + 1, len(g.events)):
+                ei = g.events[i]
+                ej = g.events[j]
+                if ei.venue == ej.venue or ei.person == ej.person:
+                    if ej.start < ei.end:
+                        g.overlapping.append(ei)
+                        g.overlapping.append(ej)
+        
     return render_template('schedule.html')
 
 
