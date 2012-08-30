@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% set active_page = "venue_add" %}
+{% set title = "Add Venue" %}
+{% block contents %}
+    <form method="post">
+        <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
+        <p>
+            <label>Title:</label>
+            <input name="title" size="80" maxlength="80"/>
+        </p>
+        <p>
+            <label>Address:</label>
+            <input name="address" size="80"/>
+        </p>
+        <p>
+            <label>Description:</label>
+            <textarea name="description" cols="80" rows="20"></textarea>
+        </p>
+        <p>
+            <label>Action:</label>
+            <input type="submit"/>
+            <input type="reset"/>
+        </p>
+    </form>
+{% endblock %}
