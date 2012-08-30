@@ -492,6 +492,28 @@ def venue_add():
     if not g.permission_venue:
         abort(401)
 
+    if request.method == 'POST':
+        venue_individual = Venue(
+            request.form['title'],
+            request.form['description'],
+            request.form['address'],
+        )
+
+        try:
+            db.session.add(venue_individual)
+            db.session.commit()
+            flash('Venue added.')
+
+        except IntegrityError as err:
+            flash(err.message, 'error')
+            db.session.rollback()
+
+        except SQLAlchemyError:
+            db.session.rollback()
+            flash('Something went wrong.')
+
+        return redirect(url_for('venue_individual', venue_id=venue_individual.id))
+
     return render_template('venue_add.html')
 
 
