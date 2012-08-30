@@ -126,14 +126,13 @@ class Event(db.Model):
 
 
 class Venue(db.Model):
-    id = db.Column(db.String(40), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80))
     text = db.Column(db.Text)
     address = db.Column(db.Text)
     events = db.relationship('Event', backref='venue_events', lazy='dynamic')
 
-    def __init__(self, id, title, text, address):
-        self.id = id
+    def __init__(self, title, text, address):
         self.title = title
         self.text = text
         self.address = address
