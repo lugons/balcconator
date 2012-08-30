@@ -111,7 +111,7 @@ class Event(db.Model):
     text = db.Column(db.Text)
     start = db.Column(db.DateTime)
     end = db.Column(db.DateTime)
-    venue = db.Column(db.String(40), db.ForeignKey('venue.id'))
+    venue = db.Column(db.Integer, db.ForeignKey('venue.id'))
 
     def __init__(self, person, title, text, start, end, venue):
         self.person = person
