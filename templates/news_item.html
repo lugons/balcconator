@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% set active_page = "news" %}
-{% set title = "News" %}
+{% set title = "News - " + g.news_item.title %}
 {% block contents %}
     <div class="news_item" id="news_item_{{ g.news_item.id }}">
-        <h3 class="news_title">{{ g.news_item.title }}</h3>
         <span class="news_date">posted on {{ g.news_item.date }}</span>
         <div class="news_text">{{ g.news_item.text|textile|safe }}</div>
         {% if g.permission_news %}
