@@ -463,12 +463,6 @@ def schedule():
     return render_template('schedule.html')
 
 
-@app.route('/schedule/<int:day>')
-def schedule_day(day):
-    g.day = day
-    return render_template('schedule.html')
-
-
 @app.route('/papers/')
 def papers():
     return render_template('papers.html')
