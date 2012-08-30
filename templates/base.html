@@ -28,16 +28,8 @@
         <li{% if active_page == 'index' %} class="active"{% endif %}>
             <a href="{{ url_for('index') }}">Home</a>
         </li>
-        <li class="vsubmenu">
-            <a class="submenudown{% if active_page == 'schedule' %} active{% endif %}" href="{{ url_for('schedule') }}">Schedule</a>
-            <ul class="menu vmenu">
-                <li{% if active_page == 'schedule' and active_subpage == 'day1' %} class="active"{% endif %}>
-                    <a href="{{ url_for('schedule_day', day=1) }}">Day 1</a>
-                </li>
-                <li{% if active_page == 'schedule' and active_subpage == 'day2' %} class="active"{% endif %}>
-                    <a href="{{ url_for('schedule_day', day=2) }}">Day 2</a>
-                </li>
-            </ul>
+        <li{% if active_page == 'sponsors' %} class="active"{% endif %}>
+            <a href="{{ url_for('schedule') }}">Schedule</a>
         </li>
         <li{% if active_page == 'papers' %} class="active"{% endif %}>
             <a href="{{ url_for('papers') }}">Call for Papers</a>
