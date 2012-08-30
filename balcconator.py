@@ -457,8 +457,32 @@ def news_add():
     return render_template('news_add.html')
 
 
-@app.route('/schedule/')
+@app.route('/schedule/', methods=['POST', 'GET'])
 def schedule():
+    if request.method == 'POST':
+        if request.form['action'] == 'add':
+            event = Event(
+                request.form['person'],
+                request.form['title'],
+                '', # description text, to be filled from a separate page
+                datetime.strptime(request.form['start'], '%Y-%m-%d %H:%M:%S'),
+                datetime.strptime(request.form['end'], '%Y-%m-%d %H:%M:%S'),
+                request.form['venue'],
+            )
+
+            try:
+                db.session.add(event)
+                db.session.commit()
+                flash('Event added.')
+
+            except IntegrityError as err:
+                flash(err.message, 'error')
+                db.session.rollback()
+
+            except SQLAlchemyError:
+                db.session.rollback()
+                flash('Something went wrong.')
+
     g.events = Event.query.order_by(Event.start.asc()).all()
     g.venues = Venue.query.order_by(Venue.title.asc()).all()
     g.people = Person.query.all()

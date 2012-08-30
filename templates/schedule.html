@@ -2,16 +2,66 @@
 {% set active_page = "schedule" %}
 {% set title = "Schedule" %}
 {% block contents %}
+    {% if g.permission_schedule %}
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery-ui.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery-ui-timepicker-addon.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery-ui-sliderAccess.js') }}"></script>
+    <link rel='stylesheet' type='text/css' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/themes/le-frog/jquery-ui.css'/>
+    {% endif %}
     <table>
-    <tr><th>who</th><th>what</th><th>when</th><th>where</th></tr>
+    <tr><th>who</th><th>what</th><th>when</th><th>where</th>{% if g.permission_schedule %}<th>action    </th>{% endif %}</tr>
     {%- for event in g.events %}
     <tr>
         <td><a href="{{ url_for('person', username=event['person']) }}">{{ event['person'] }}</a></td>
         <td>{{ event['title'] }}</td>
         <!-- <td>{{ event['text'] }}</td> -->
         <td>{{ event['start'] }} - {{ event['end'] }}</td>
-        <td><a href="{{ url_for('venue', _anchor=event['venue']) }}">{{ event['venue'] }}</a></td>
+        <td><a href="{{ url_for('venue_individual', venue_id=event['venue']) }}">{{ event['venue'] }}</a></td>
+        {% if g.permission_schedule %}
+        <td>
+            <form method="post">
+                <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
+                <input type="submit" name="action" value="delete"/>
+                <input type="submit" name="action" value="reschedule"/>
+            </form>
+        </td>
+        {% endif %}
     </tr>
     {%- endfor %}
+    {% if g.permission_schedule %}
+    <tr>
+    <form method="post">
+        <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
+        <td>
+            <select name="person">
+                {% for person in g.people %}
+                <option value="{{ person.username }}">{{ person.displayname }}</option>
+                {% endfor %}
+            </select>
+        </td>
+        <td><input type="text" name="title"/></td>
+        <td>
+            <input class="datetimepicker" type="datetime" name="start"/>
+            <input class="datetimepicker" type="datetime" name="end"/>
+        </td>
+        <td>
+            <select name="venue">
+                {% for venue in g.venues %}
+                <option value="{{ venue.id }}">{{ venue.title }}</option>
+                {% endfor %}
+            </select>
+        </td>
+        <td>
+            <input type="submit" name="action" value="add"/>
+        </td>
+    </form>
+    </tr>
+    {% endif %}
     </table>
+    <script>
+    $.datepicker.setDefaults({dateFormat: 'yy-mm-dd',})
+    $.timepicker.setDefaults({timeFormat: 'hh:mm:ss',})
+    $('.datetimepicker').datetimepicker({showSecond: true});
+    </script>
 {% endblock %}
