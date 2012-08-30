@@ -4,7 +4,7 @@
 {% block contents %}
     <ul>
         {%- for group in g.groups %}
-        <li><a href="{{ url_for('group', groupname=group['groupname']) }}">{{ group['displayname'] }}</a></li>
+        <li><a href="{{ url_for('group', groupname=group.groupname) }}">{{ group.displayname }}</a></li>
         {%- endfor %}
     </ul>
 {% endblock %}
