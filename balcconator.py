@@ -506,6 +506,15 @@ def schedule():
     return render_template('schedule.html')
 
 
+@app.route('/schedule/icalendar')
+def schedule():
+    g.events = Event.query.all()
+    response = make_response(render_template('icalendar.ical'))
+    response.headers['Content-Type'] = 'text/calendar'
+    response.headers['Content-Disposition'] = 'attachment;filename="icalendar.ical"'
+    return response
+
+
 @app.route('/papers/')
 def papers():
     return render_template('papers.html')

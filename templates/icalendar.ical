@@ -1,0 +1,12 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//lugons/balcconator
+{% for event in g.events %}BEGIN:VEVENT
+ORGANIZER;CN={{ event.person.displayname }}:MAILTO:{{ event.person.email }}
+DTSTART:{{ event.start.strftime('%Y%m%dT%H%M%S') }}
+DTEND:{{ event.end.strftime('%Y%m%dT%H%M%S') }}
+SUMMARY:{{ event.title }}
+URL:{{ url_for('schedule', _external=True) }}
+LOCATION:{{ event.venue.title }}
+END:VEVENT
+{% endfor %}END:VCALENDAR
