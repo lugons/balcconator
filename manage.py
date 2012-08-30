@@ -50,13 +50,13 @@ def initdb():
 
     from datetime import datetime
     # person, title, text, start, end
-    ev1 = Event('admin', 'Welcome Party', 'The opening ceremony of the conference', datetime(2013, 9, 1, 20, 0), datetime(2013, 9, 1, 23, 59), 'restoran')
+    ev1 = Event('admin', 'Welcome Party', 'The opening ceremony of the conference', datetime(2013, 9, 1, 20, 0), datetime(2013, 9, 1, 23, 59), 3)
     db.session.add(ev1)
     db.session.commit()
 
-    ev2 = Event('john', 'John 101', 'Foreword by John', datetime(2013, 9, 2, 10, 0), datetime(2013, 9, 2, 12, 59), 'sala1')
-    ev3 = Event('jane', 'Jane 101', 'Foreword by Jane', datetime(2013, 9, 2, 13, 0), datetime(2013, 9, 1, 13, 59), 'sala2')
-    ev4 = Event('john', 'John 102', 'Continuation by John', datetime(2013, 9, 2, 14, 0), datetime(2013, 9, 1, 14, 59), 'sala1')
+    ev2 = Event('john', 'John 101', 'Foreword by John', datetime(2013, 9, 2, 10, 0), datetime(2013, 9, 2, 12, 59), 1)
+    ev3 = Event('jane', 'Jane 101', 'Foreword by Jane', datetime(2013, 9, 2, 13, 0), datetime(2013, 9, 1, 13, 59), 2)
+    ev4 = Event('john', 'John 102', 'Continuation by John', datetime(2013, 9, 2, 14, 0), datetime(2013, 9, 1, 14, 59), 1)
     db.session.add(ev2)
     db.session.add(ev3)
     db.session.add(ev4)
