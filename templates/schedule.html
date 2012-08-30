@@ -13,11 +13,11 @@
     <tr><th>who</th><th>what</th><th>when</th><th>where</th>{% if g.permission_schedule %}<th>action</th>{% endif %}</tr>
     {%- for event in g.events %}
     <tr>
-        <td><a href="{{ url_for('person', username=event['person']) }}">{{ event['person'] }}</a></td>
-        <td>{{ event['title'] }}</td>
-        <!-- <td>{{ event['text'] }}</td> -->
-        <td>{{ event['start'] }} - {{ event['end'] }}</td>
-        <td><a href="{{ url_for('venue_individual', venue_id=event['venue']) }}">{{ event['venue'] }}</a></td>
+        <td><a href="{{ url_for('person', username=event.person_username) }}">{{ event.person.displayname }}</a></td>
+        <td>{{ event.title }}</td>
+        <!-- <td>{{ event.text }}</td> -->
+        <td>{{ event.start }} - {{ event.end }}</td>
+        <td><a href="{{ url_for('venue_individual', venue_id=event.venue_id) }}">{{ event.venue.title }}</a></td>
         {% if g.permission_schedule %}
         <td>
             <form method="post">
