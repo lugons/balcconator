@@ -23,7 +23,7 @@ def initdb():
     db.session.add(lecturers)
 
     # username, password, email, firstname, lastname, displayname, gender
-    admin = Person('admin', 'adm1n', 'admin@localhost', '', '', 'Administrator', 'unspecified', permission_news=True, permission_reviewer=True, permission_venue=True)
+    admin = Person('admin', 'adm1n', 'admin@localhost', '', '', 'Administrator', 'unspecified', permission_news=True, permission_reviewer=True, permission_venue=True, permission_schedule=True)
     john = Person('john', 'john', 'john@localhost', 'John', 'Doe', 'John Doe', 'male')
     jane = Person('jane', 'jane', 'jane@localhost', 'Jane', 'Doe', 'Jane Doe', 'female')
     reviewer = Person('reviewer', 'reviewer', 'reviewer@localhost', '', '', 'Reviewer', 'unspecified', permission_reviewer=True)

@@ -49,8 +49,9 @@ class Person(db.Model):
     permission_news = db.Column(db.Boolean)
     permission_reviewer = db.Column(db.Boolean)
     permission_venue = db.Column(db.Boolean)
+    permission_schedule = db.Column(db.Boolean)
 
-    def __init__(self, username, password='', email='', firstname='', lastname='', displayname='', gender='unspecified', confirmation_code=None, permission_news=False, permission_reviewer=False, permission_venue=False):
+    def __init__(self, username, password='', email='', firstname='', lastname='', displayname='', gender='unspecified', confirmation_code=None, permission_news=False, permission_reviewer=False, permission_venue=False, permission_schedule=False):
         self.username = username
         self.password = sha1(password).hexdigest()
         self.email = email
@@ -67,6 +68,7 @@ class Person(db.Model):
         self.permission_news = permission_news
         self.permission_reviewer = permission_reviewer
         self.permission_venue = permission_venue
+        self.permission_schedule = permission_schedule
 
     def __repr__(self):
         return '<Person %r>' % self.username
@@ -186,12 +188,14 @@ def fetch_permissions():
         g.permission_news = False
         g.permission_reviewer = False
         g.permission_venue = False
+        g.permission_schedule = False
 
     else:
         user = Person.query.filter_by(username=username).first()
         g.permission_news = user.permission_news
         g.permission_reviewer = user.permission_reviewer
         g.permission_venue = user.permission_venue
+        g.permission_schedule = user.permission_schedule
 
 
 @app.template_filter()
