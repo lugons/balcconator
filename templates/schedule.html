@@ -10,7 +10,7 @@
     <link rel='stylesheet' type='text/css' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/themes/le-frog/jquery-ui.css'/>
     {% endif %}
     <table>
-    <tr><th>who</th><th>what</th><th>when</th><th>where</th>{% if g.permission_schedule %}<th>action    </th>{% endif %}</tr>
+    <tr><th>who</th><th>what</th><th>when</th><th>where</th>{% if g.permission_schedule %}<th>action</th>{% endif %}</tr>
     {%- for event in g.events %}
     <tr>
         <td><a href="{{ url_for('person', username=event['person']) }}">{{ event['person'] }}</a></td>
