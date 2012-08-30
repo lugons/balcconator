@@ -4,16 +4,22 @@
 {% block contents %}
     {% for venue in g.venues %}
     <div class="venue">
-    <h2 id="{{ venue.id }}"><a href="#{{ venue.id }}">{{ venue.title }}</a></h2>
-    <div>{{ venue.text }}</div>
-    <div>Address: {{ venue.address }}</div>
-    <div>Events at this venue:
-        <ul>
-        {% for event in venue.events %}
-        <li>{{ event.title }}</li>
-        {% endfor %}
-        </ul>
-    </div>
+        <h3 id="{{ venue.id }}"><a href="{{ url_for('venue_individual', venue_id = venue.id) }}">{{ venue.title }}</a></h3>
+        <div>{{ venue.text }}</div>
+        <div>Address: {{ venue.address }}</div>
+        <div>Events at this venue:
+            <ul>
+            {% for event in venue.events %}
+            <li>{{ event.title }}</li>
+            {% endfor %}
+            </ul>
+            {% if g.permission_venue %}
+            <a href="{{ url_for('venue_edit', venue_id = venue.id) }}">Edit</a>
+            {% endif %}
+        </div>
     </div>
     {% endfor %}
+    {% if g.permission_venue %}
+    <a href="{{ url_for('venue_add') }}">Add venue</a>
+    {% endif %}
 {% endblock %}
