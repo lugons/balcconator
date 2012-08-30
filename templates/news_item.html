@@ -8,6 +8,10 @@
         <div class="news_text">{{ g.news_item.text|textile|safe }}</div>
         {% if g.permission_news %}
         <a href="{{ url_for('news_edit', news_id = g.news_item.id) }}">Edit</a>
+        <form class="inline" method="post" action="{{ url_for('news_delete', news_id = g.news_item.id) }}">
+            <input type="hidden" name="csrf" value="{{ session.csrf }}"/>
+            <input type="submit" value="Delete"/>
+        </form>
         {% endif %}
     </div>
 {% endblock %}

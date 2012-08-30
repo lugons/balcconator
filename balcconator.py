@@ -401,6 +401,29 @@ def news_edit(news_id):
     return render_template('news_edit.html')
 
 
+@app.route('/news/<int:news_id>/delete', methods=['POST', 'GET'])
+def news_delete(news_id):
+    if not g.permission_news:
+        abort(401)
+
+    news_item = News.query.filter_by(id=news_id).first()
+    if request.method == 'POST':
+        try:
+            db.session.delete(news_item)
+            db.session.commit()
+            flash('News deleted.')
+
+        except IntegrityError as err:
+            flash(err.message, 'error')
+            db.session.rollback()
+
+        except SQLAlchemyError:
+            db.session.rollback()
+            flash('Something went wrong.')
+
+    return redirect(url_for('news'))
+
+
 @app.route('/news/add', methods=['POST', 'GET'])
 def news_add():
     if not g.permission_news:
