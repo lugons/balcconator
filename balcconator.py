@@ -507,7 +507,7 @@ def schedule():
 
 
 @app.route('/schedule/icalendar')
-def schedule():
+def icalendar():
     g.events = Event.query.all()
     response = make_response(render_template('icalendar.ical'))
     response.headers['Content-Type'] = 'text/calendar'
