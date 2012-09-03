@@ -118,6 +118,8 @@ class Event(db.Model):
     venue = db.relationship('Venue')
 
     def __init__(self, person_username, title, text, start, end, venue_id):
+        if end < start:
+            raise ValueError
         self.person_username = person_username
         self.title = title
         self.text = text
@@ -486,7 +488,7 @@ def schedule():
                 flash('Something went wrong.')
 
             except ValueError:
-                flash('Invalid date/time format')
+                flash('Event ends before it starts or invalid date/time format')
 
         elif request.form['action'] == 'delete':
             event = Event.query.filter_by(id=request.form['event_id']).first()
