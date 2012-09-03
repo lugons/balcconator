@@ -203,6 +203,11 @@ def fetch_permissions():
         g.permission_schedule = user.permission_schedule
 
 
+@app.before_request
+def generate_qr_link():
+    g.qr_link = url_for('qr', text=request.url)
+
+
 @app.template_filter()
 def reverse(s):
     return s[::-1]
@@ -876,10 +881,9 @@ def unauthorized(e):
     return render_template('400.html'), 400
 
 
-@app.route('/qr', defaults={'path': ''})
-@app.route('/<path:path>/qr')
-def qr(path):
-    text = request.url[:-3]
+@app.route('/qr')
+def qr():
+    text = request.args['text']
 
     image = qrencode.encode_scaled(text, 120)[2]
     image = image.convert('RGB')

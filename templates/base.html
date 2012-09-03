@@ -81,7 +81,8 @@
             <li><a href="{{ url_for('about') }}">About BalCCon</a></li>
             <li><a href="{{ url_for('friends') }}">LUGoNS and Friends</a></li>
         </ul>
-        <img src="{{ request.url + '/qr' }}" alt="qr"/>
+        <img src="{{ g.qr_link }}" alt="qr" width="120" height="120"/>
+
     </td>
     <td id="main-center">
     {%- with messages = get_flashed_messages(with_categories=true) %}
@@ -101,6 +102,7 @@
         Ovde idu sponzori, baneri i tako to.<br/>
         <a href="http://validator.w3.org/check?uri=referer">W3C Validator</a><br/>
         session: {{ session }}<br/>
+        qr_link: {{ g.qr_link }}<br/>
         permission_news: {{ g.permission_news }}<br/>
         permission_reviewer: {{ g.permission_reviewer }}<br/>
         permission_venue: {{ g.permission_venue }}<br/>
