@@ -376,13 +376,13 @@ def group(groupname):
 
 @app.route('/news/')
 def news():
-    g.news = News.query.order_by(News.date.desc()).all()
+    g.news = News.query.order_by(News.id.desc()).all()
     return render_template('news.html')
 
 
 @app.route('/news/atom')
 def feed_atom():
-    g.news = News.query.order_by(News.date.desc()).all()
+    g.news = News.query.order_by(News.id.desc()).all()
     g.date = datetime.utcnow()
     response = make_response(render_template('feed_atom.xml'))
     response.headers['Content-Type'] = 'application/atom+xml'
