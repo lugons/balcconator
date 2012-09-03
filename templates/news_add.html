@@ -2,6 +2,8 @@
 {% set active_page = "news_add" %}
 {% set title = "Add News" %}
 {% block contents %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='markitup/skins/markitup/style.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='markitup/sets/textile/style.css') }}"/>
     <script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='markitup/jquery.markitup.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='markitup/sets/textile/set.js') }}"></script>
