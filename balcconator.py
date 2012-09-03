@@ -519,7 +519,7 @@ def schedule():
                     if ej.start < ei.end:
                         g.overlapping.append(ei)
                         g.overlapping.append(ej)
-        
+
     return render_template('schedule.html')
 
 
