@@ -380,6 +380,16 @@ def news():
     return render_template('news.html')
 
 
+@app.route('/news/atom')
+def feed_atom():
+    g.news = News.query.order_by(News.date.desc()).all()
+    g.date = datetime.utcnow()
+    response = make_response(render_template('feed_atom.xml'))
+    response.headers['Content-Type'] = 'application/atom+xml'
+    response.headers['Content-Disposition'] = 'attachment;filename="atom.xml"'
+    return response
+
+
 @app.route('/news/<int:news_id>')
 def news_item(news_id):
     g.news_item = News.query.filter_by(id=news_id).first()
