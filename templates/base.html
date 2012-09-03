@@ -67,6 +67,7 @@
         {% if session.username %}<div style="float: right">logged in as: <a href="{{ url_for('person', username=session.username) }}">{{ session.username }}</a></div>{% endif %}
     </div>
     <table id="main">
+    <tr>
     <td id="main-left">
         <ul class="menu vmenu">
             <li class="submenuright">
@@ -98,6 +99,7 @@
     <h2 id="title">{{ title }}</h2>
     <div id="main-contents">{% block contents %}{% endblock %}</div>
     </td>
+    </tr>
     </table>
     <div id="footer">
         Ovde idu sponzori, baneri i tako to.<br/>
