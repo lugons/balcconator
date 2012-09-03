@@ -4,6 +4,7 @@
 import config, os
 
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, make_response, request, g, session, flash, redirect, url_for, abort, send_from_directory, safe_join
 app = Flask(__name__)
 
@@ -53,7 +54,7 @@ class Person(db.Model):
 
     def __init__(self, username, password='', email='', firstname='', lastname='', displayname='', gender='unspecified', confirmation_code=None, permission_news=False, permission_reviewer=False, permission_venue=False, permission_schedule=False):
         self.username = username
-        self.password = sha1(password).hexdigest()
+        self.password = generate_password_hash(password)
         self.email = email
         self.firstname = firstname
         self.lastname = lastname
@@ -277,12 +278,12 @@ def person(username):
                     flash('Repeated password is not the same as the new password. Please try again.', 'error')
 
                 else:
-                    person = Person.query.filter_by(username=username, password=sha1(request.form['old_password']).hexdigest()).first()
-                    if person is None:
+                    person = Person.query.filter_by(username=username).first()
+                    if (person is None) or (not check_password_hash(person.password, request.form['password'])):
                         flash('Current password does not match. Please try again.', 'error')
 
                     else:
-                        person.password = sha1(request.form['new_password']).hexdigest()
+                        person.password = generate_password_hash(request.form['new_password'])
                         try:
                             db.session.add(person)
                             db.session.commit()
@@ -663,8 +664,8 @@ def login():
         return redirect(url_for('index'))
 
     if request.method == 'POST':
-        person = Person.query.filter_by(username=request.form['username'], password=sha1(request.form['password']).hexdigest(), confirmation_code=None).first()
-        if person is None:
+        person = Person.query.filter_by(username=request.form['username'], confirmation_code=None).first()
+        if (person is None) or (not check_password_hash(person.password, request.form['password'])):
             flash('Invalid username or password. Please try again.', 'error')
             g.referrer = request.form['referrer']
             return render_template('login.html')
