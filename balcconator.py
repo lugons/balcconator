@@ -405,6 +405,7 @@ def news_edit(news_id):
     if request.method == 'POST':
         news_item.title = request.form['title']
         news_item.text = request.form['text']
+        news_item.date = datetime.utcnow()
 
         try:
             db.session.add(news_item)
