@@ -6,6 +6,13 @@ body {
     background-position: 90% 50px;
     background-attachment: fixed;
     font-family: 'Glegoo', serif;
+
+    border: 1px solid #0f0;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -khtml-border-radius: 20px;
+    -o-border-radius: 20px;
+    border-radius: 20px;
 }
 
 table {
@@ -14,6 +21,7 @@ table {
 
 #logreg {
     float: right;
+    margin: 10px;
 }
 
 #header {
@@ -125,6 +133,7 @@ a:hover {
 
 #footer {
     border-top: 1px solid #0f0;
+    padding: 0px 10px 10px 10px;
 }
 
 #flashes .error {
