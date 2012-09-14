@@ -192,3 +192,8 @@ label {
 #ui-datepicker-div {
     font-size: 60%;
 }
+
+.qrcell {
+    vertical-align: bottom;
+    padding-bottom: 10px;
+}
