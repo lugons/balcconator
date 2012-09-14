@@ -14,8 +14,14 @@ def hello():
 @manager.command
 def initdb():
     from balcconator import db, Person, Group, Event, Venue
+
     db.drop_all()
     db.create_all()
+
+
+@manager.command
+def add_example_data():
+    from balcconator import db, Person, Group, Event, Venue
 
     admins = Group('admins', 'Administrators', 'admins@localhost')
     lecturers = Group('lecturers', 'Lecturers', 'lecturers@localhost')
