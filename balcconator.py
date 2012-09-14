@@ -202,6 +202,7 @@ def fetch_permissions():
         g.permission_venue = user.permission_venue
         g.permission_schedule = user.permission_schedule
 
+    g.debug = app.debug
 
 @app.before_request
 def generate_qr_link():

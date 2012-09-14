@@ -102,11 +102,13 @@
     </table>
     <div id="footer">
         <a href="http://validator.w3.org/check?uri=referer">W3C Validator</a><br/>
+        {% if g.debug %}
         session: {{ session }}<br/>
         qr_link: {{ g.qr_link }}<br/>
         permission_news: {{ g.permission_news }}<br/>
         permission_reviewer: {{ g.permission_reviewer }}<br/>
         permission_venue: {{ g.permission_venue }}<br/>
         permission_schedule: {{ g.permission_schedule }}<br/>
+        {% endif %}
     </div>
 </body>
