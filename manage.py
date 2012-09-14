@@ -5,10 +5,44 @@ from balcconator import app
 from flaskext.script import Manager
 manager = Manager(app)
 
+permissions = ['news', 'reviewer', 'venue', 'schedule']
 
 @manager.command
-def hello():
-    print "hello"
+def grant(username, permission):
+    if not permission in permissions:
+        print 'Unknown permission.'
+        return
+
+    from balcconator import db, Person
+    person = Person.query.filter_by(username=username).first()
+
+    if not person:
+        print 'Username not found.'
+        return
+
+    setattr(person, 'permission_' + permission, True)
+    db.session.add(person)
+    db.session.commit()
+    print 'Permission', permission, 'granted to', username
+
+
+@manager.command
+def ungrant(username, permission):
+    if not permission in permissions:
+        print 'Unknown permission.'
+        return
+
+    from balcconator import db, Person
+    person = Person.query.filter_by(username=username).first()
+
+    if not person:
+        print 'Username not found.'
+        return
+
+    setattr(person, 'permission_' + permission, False)
+    db.session.add(person)
+    db.session.commit()
+    print 'Permission', permission, 'removed from', username
 
 
 @manager.command
