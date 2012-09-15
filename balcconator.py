@@ -203,6 +203,7 @@ def fetch_permissions():
         g.permission_schedule = user.permission_schedule
 
     g.debug = app.debug
+    g.registration_enabled = app.config['REGISTRATION_ENABLED']
 
 @app.before_request
 def generate_qr_link():
@@ -707,6 +708,9 @@ def logout():
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
+    if not g.registration_enabled:
+        abort(401)
+
     if session.get('username', None):
         flash('You are already logged in. Please log out before registering a new account.')
         return redirect(url_for('index'))

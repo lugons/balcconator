@@ -28,3 +28,6 @@ DEFAULT_MAIL_SENDER = ("BalCCon administration team", "root@localhost")
 
 # documents uploaded by users and published after review
 DOCUMENTS_LOCATION = '/home/balcconator/documents'
+
+# can new users register on their own, using the two-step registration by e-mail?
+REGISTRATION_ENABLED = False

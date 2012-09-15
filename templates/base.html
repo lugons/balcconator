@@ -12,8 +12,10 @@
 {% set active_page = active_page|default('index') %}
     <span id="logreg">
     {% if not session.username %}
-        <a{% if active_page == 'login' %} class="active"{% endif %} href="{{ url_for('login') }}">Login</a> /
-        <a{% if active_page == 'register' %} class="active"{% endif %} href="{{ url_for('register') }}">Register</a>
+        <a{% if active_page == 'login' %} class="active"{% endif %} href="{{ url_for('login') }}">Login</a>
+        {% if g.registration_enabled %}
+         / <a{% if active_page == 'register' %} class="active"{% endif %} href="{{ url_for('register') }}">Register</a>
+        {% endif %}
     {% else %}
         <a{% if active_page == 'logout' %} class="active"{% endif %} href="{{ url_for('logout') }}">Logout</a>
     {% endif %}
